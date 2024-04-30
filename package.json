@@ -1,0 +1,28 @@
+{
+  "name": "legacy-link",
+  "version": "1.0.0",
+  "description": "A platform for storing and delivering final messages to loved ones.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sharmalakshay/LegacyLink.git"
+  },
+  "keywords": [
+    "legacy",
+    "messages",
+    "final",
+    "farewell"
+  ],
+  "author": "Lakshay Sharma",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sharmalakshay/LegacyLink/issues"
+  },
+  "homepage": "https://github.com/sharmalakshay/LegacyLink#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
