@@ -40,3 +40,9 @@ app.get('/login', (req, res) => {
 app.get('/registration', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'registration.html'));
 });
+
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'dashboard.html'));
+});
+
+module.exports = app;

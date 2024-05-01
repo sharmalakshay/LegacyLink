@@ -13,8 +13,8 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
         if (!response.ok) {
             throw new Error('Login failed');
         }
-        alert('Login successful');
-        // Redirect to dashboard or user profile page
+        // Redirect to dashboard
+        window.location.href = '/dashboard';
     } catch (error) {
         console.error('Login error:', error);
         alert('Login failed');
