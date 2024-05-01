@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const argon2 = require('argon2');
 
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
@@ -10,16 +10,19 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save', async function (next) {
     const user = this;
     if (!user.isModified('password')) return next();
-
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(user.password, salt);
-    user.password = hash;
-    next();
+    try {
+        const hashedPassword = await argon2.hash(user.password);
+        user.password = hashedPassword;
+        next();
+    } catch (error) {
+        console.error('Error hashing password:', error);
+        next(error);
+    }
 });
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
     const user = this;
-    return await bcrypt.compare(candidatePassword, user.password);
+    return await argon2.verify(user.password, candidatePassword);
 };
 
 const User = mongoose.model('User', userSchema, 'users');
