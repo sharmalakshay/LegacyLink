@@ -13,6 +13,10 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
         if (!response.ok) {
             throw new Error('Login failed');
         }
+        const data = await response.json();
+        // Save the token in local storage
+        localStorage.setItem('token', data.token);
+        document.cookie = `token=${data.token}; path=/;`;
         // Redirect to dashboard
         window.location.href = '/dashboard';
     } catch (error) {
