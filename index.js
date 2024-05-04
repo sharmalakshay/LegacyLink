@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const { router: authRoutes } = require('./routes/auth');
+const authRoutes = require('./routes/auth');
 const authenticateJWT = require('./middleware/authenticateJWT');
 const path = require('path');
 const User = require('./models/User');
@@ -77,8 +77,22 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-    // Serve dashboard page
-    res.sendFile(path.join(__dirname, 'public', 'html', 'dashboard.html'));
+    // Check if a JWT token is present in the cookies
+    const token = req.cookies.token;
+    if (token) {
+        try {
+            // Verify the token
+            jwt.verify(token, process.env.JWT_SECRET);
+            // If the token is valid, redirect to the dashboard
+            return res.sendFile(path.join(__dirname, 'public', 'html', 'dashboard.html'));
+        } catch (err) {
+            // If the token is not valid, serve the login page
+            res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
+        }
+    } else {
+        // If no token is present, serve the login page
+        res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
+    }
 });
 
 app.get('/dashboard/profile', authenticateJWT, async (req, res) => {
@@ -103,6 +117,26 @@ app.get('/registration', (req, res) => {
 app.get('/logout', (req, res) => {
     res.clearCookie('token');
     res.redirect('/login');
+});
+
+app.use((req, res, next) => {
+    if (req.path.split('/').length > 2) {
+        res.status(404).send('Not found');
+    } else {
+        User.findOne({ username: req.path.split('/')[1] })
+            .then(user => {
+                if (user) {
+                    res.json(user); //send direct json response - for testing
+                    // Render the profile page with the user's data
+                    // res.render('profile', { user: user });
+                } else {
+                    res.status(404).send('Not found');
+                }
+            })
+            .catch(err => {
+                res.status(500).send('Server error');
+            });
+    }
 });
 
 module.exports = app;

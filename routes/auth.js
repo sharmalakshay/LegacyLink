@@ -5,14 +5,6 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
 
-// Route middleware to ensure user is authenticated
-const isAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login'); // Redirect to login page if user is not authenticated
-};
-
 router.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
@@ -62,7 +54,4 @@ router.post('/login', async (req, res) => {
     }
 });
 
-module.exports = {
-    router,
-    isAuthenticated
-};
+module.exports = router;
