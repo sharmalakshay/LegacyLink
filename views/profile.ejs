@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Profile</title>
+    <script>
+        async function checkPassword() {
+            let password;
+            let response;
+            do {
+                password = prompt("Please enter your password:");
+                response = await fetch('/auth/check_password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username: "<%= user.username %>", password: password }),
+                });
+                if (response.status !== 200) {
+                    alert("Incorrect password. Please try again.");
+                }
+            } while (response.status !== 200);
+            document.getElementById("email").innerText = "<%= user.email %>";
+        }
+    </script>
+</head>
+
+<body onload="checkPassword()">
+    <h1>Welcome, <%= user.username %>
+    </h1>
+    <p id="email"></p>
+    <!-- More user information here -->
+</body>
+
+</html>

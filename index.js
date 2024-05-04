@@ -10,6 +10,8 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
+app.set('view engine', 'ejs');
+
 app.use(cookieParser());
 
 // Middleware
@@ -126,9 +128,8 @@ app.use((req, res, next) => {
         User.findOne({ username: req.path.split('/')[1] })
             .then(user => {
                 if (user) {
-                    res.json(user); //send direct json response - for testing
                     // Render the profile page with the user's data
-                    // res.render('profile', { user: user });
+                    res.render('profile', { user: user });
                 } else {
                     res.status(404).send('Not found');
                 }

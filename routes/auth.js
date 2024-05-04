@@ -54,4 +54,32 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.post('/check_password', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        // Find user by username
+        const user = await User.findOne({ username }).select('+password');
+        if (!user) {
+            // handle user not found
+            console.error('User not found');
+            return res.status(404).json({ message: 'User not found' });
+        } else {
+            // Check password
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (!isMatch) {
+                // handle invalid credentials
+                console.error('Invalid credentials');
+                return res.status(401).json({ message: 'Invalid credentials' });
+            } else {
+                // handle login success
+                console.log('Password correct');
+                return res.status(200).json({ message: 'Password correct' });
+            }
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
 module.exports = router;
