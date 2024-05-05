@@ -54,7 +54,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/check_password', async (req, res) => {
+router.post('/retrieve_msgs', async (req, res) => {
     try {
         const { username, password } = req.body;
         // Find user by username
@@ -73,7 +73,7 @@ router.post('/check_password', async (req, res) => {
             } else {
                 // handle login success
                 console.log('Password correct');
-                return res.status(200).json({ message: 'Password correct' });
+                return res.status(200).json({ msgs: user.messages });
             }
         }
     } catch (error) {

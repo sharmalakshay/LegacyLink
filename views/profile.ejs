@@ -4,12 +4,12 @@
 <head>
     <title>User Profile</title>
     <script>
-        async function checkPassword() {
+        async function retrieveMsgs() {
             let password;
             let response;
             do {
                 password = prompt("Please enter your password:");
-                response = await fetch('/auth/check_password', {
+                response = await fetch('/auth/retrieve_msgs', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -20,16 +20,22 @@
                     alert("Incorrect password. Please try again.");
                 }
             } while (response.status !== 200);
-            document.getElementById("email").innerText = "<%= user.email %>";
+            let data = await response.json();
+            let msgs = data.msgs;
+            let ul = document.getElementById('user-msgs');
+            msgs.forEach(msg => {
+                let li = document.createElement('li');
+                li.textContent = `${msg.name}: ${msg.message}`;
+                ul.appendChild(li);
+            });
         }
     </script>
 </head>
 
-<body onload="checkPassword()">
+<body onload="retrieveMsgs()">
     <h1>Welcome, <%= user.username %>
     </h1>
-    <p id="email"></p>
-    <!-- More user information here -->
+    <ul id="user-msgs"></ul>
 </body>
 
 </html>
