@@ -24,7 +24,7 @@ LegacyLink is a platform that allows users to store final messages for their lov
 
 ## Contributing
 
-Contributions are welcome! If you have any suggestions, ideas, or want to report a bug, please [open an issue](link-to-issues) or [submit a pull request](link-to-pull-requests).
+Contributions are welcome! If you have any suggestions, ideas, or want to report a bug, please [open an issue](https://github.com/sharmalakshay/LegacyLink/issues) or [submit a pull request](https://github.com/sharmalakshay/LegacyLink/pulls).
 
 ## License
 
