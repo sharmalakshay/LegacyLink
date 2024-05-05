@@ -23,7 +23,7 @@
     <form id="name-message-form">
         <input type="text" id="new-name" placeholder="Enter a new name" required>
         <input type="text" id="new-message" placeholder="Enter a new message" required>
-        <button type="button" onclick="addName()">Add Name and Message</button>
+        <button type="submit" onsubmit="addName()">Add Name and Message</button>
     </form>
 
     <!-- Settings modal -->
@@ -39,6 +39,7 @@
         }
 
         function addName() {
+            e.preventDefault();
             var name = document.getElementById('new-name').value;
             var message = document.getElementById('new-message').value;
             var token = localStorage.getItem('token');
