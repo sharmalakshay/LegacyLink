@@ -82,4 +82,22 @@ router.post('/check_password', async (req, res) => {
     }
 });
 
+router.post('/add_name', async (req, res) => {
+    try {
+        const { username, name, message } = req.body;
+        const user = await User.findOne({
+            username
+        });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        user.messages.push({ name, message });
+        await user.save();
+        res.status(200).json({ message: 'Message added successfully' });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 module.exports = router;

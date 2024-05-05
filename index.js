@@ -34,6 +34,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Use authentication routes
 app.use('/auth', authRoutes);
 
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
 app.get('/', (req, res) => {
     // Check if a JWT token is present in the cookies
     const token = req.cookies.token;
@@ -51,12 +57,6 @@ app.get('/', (req, res) => {
         // If no token is present, serve the login page
         res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
     }
-});
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
 });
 
 app.get('/login', (req, res) => {
@@ -86,7 +86,19 @@ app.get('/dashboard', (req, res) => {
             // Verify the token
             jwt.verify(token, process.env.JWT_SECRET);
             // If the token is valid, redirect to the dashboard
-            return res.sendFile(path.join(__dirname, 'public', 'html', 'dashboard.html'));
+            const user_id = jwt.decode(token).id;
+            User.findOne({ _id: user_id })
+            .then(user => {
+                if (user) {
+                    // Render the dashboard page with the user's data
+                    res.render('dashboard', { user: user });
+                } else {
+                    res.status(404).send('User Info Not found');
+                }
+            })
+            .catch(err => {
+                res.status(500).send('Server error');
+            });
         } catch (err) {
             // If the token is not valid, serve the login page
             res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
@@ -94,21 +106,6 @@ app.get('/dashboard', (req, res) => {
     } else {
         // If no token is present, serve the login page
         res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
-    }
-});
-
-app.get('/dashboard/profile', authenticateJWT, async (req, res) => {
-    try {
-        // Fetch the user's profile information
-        const user = await User.findById(req.user.id).select('-password');
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        // Send the user's profile information in the response
-        res.json(user);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
     }
 });
 

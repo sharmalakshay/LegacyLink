@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <!-- Include CSS styles -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+    <h1>Welcome, <span id="username"></span>User</span>!</h1>
+    <button onclick="logout()" id="logout-button">Logout</button>
+
+    <!-- List management section -->
+    <h2>List of Names</h2>
+    <ul id="name-list">
+        <% user.messages.forEach(name => { %>
+            <li><%= name.name %>: <%= name.message %></li>
+        <% }); %>
+    </ul>
+    <form id="name-message-form">
+        <input type="text" id="new-name" placeholder="Enter a new name" required>
+        <input type="text" id="new-message" placeholder="Enter a new message" required>
+        <button type="button" onclick="addName()">Add Name and Message</button>
+    </form>
+
+    <!-- Settings modal -->
+    <div id="settings-modal" class="modal">
+        <!-- Settings form will be displayed here -->
+    </div>
+
+    <script>
+        function logout() {
+            localStorage.removeItem('token');
+            document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+            window.location.href = '/logout';
+        }
+
+        function addName() {
+            var name = document.getElementById('new-name').value;
+            var message = document.getElementById('new-message').value;
+            var token = localStorage.getItem('token');
+            fetch('/auth/add_name', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ username: "<%= user.username %>", name, message })
+            })
+                .then(response => {
+                    if (response.status === 200) {
+                        alert('Message added successfully');
+                        window.location.href = '/dashboard';
+                    } else {
+                        return response.json();
+                    }
+                })
+                .then(data => {
+                    if (data) {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+
+</html>
