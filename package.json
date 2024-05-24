@@ -4,10 +4,7 @@
   "description": "A platform for storing and delivering final messages to loved ones.",
   "main": "index.js",
   "scripts": {
-    "test": "echo 'Error: no test specified' && exit 1",
-    "predeploy": "echo 'Running predeploy script'",
-    "deploy": "node index.js",
-    "postdeploy": "echo 'Running postdeploy script'"
+    "test": "echo 'Error: no test specified' && exit 1"
   },
   "repository": {
     "type": "git",
