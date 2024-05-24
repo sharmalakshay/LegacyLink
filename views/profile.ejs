@@ -3,6 +3,7 @@
 
 <head>
     <title>User Profile</title>
+    <link rel="stylesheet" href="../css/profile.css">
     <script>
         async function retrieveMsgs() {
             let password;
@@ -33,7 +34,7 @@
 </head>
 
 <body onload="retrieveMsgs()">
-    <h1>Welcome, <%= user.username %>
+    <h1>Profile of <%= user.username %>
     </h1>
     <ul id="user-msgs"></ul>
 </body>

@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #333;
+    padding: 20px;
+    text-align: center;
+}
+
+#user-msgs {
+    list-style-type: none;
+    padding: 0;
+    width: 80%;
+    margin: auto;
+}
+
+#user-msgs li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 18px;
+}
