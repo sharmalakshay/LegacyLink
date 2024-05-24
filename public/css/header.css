@@ -1,0 +1,21 @@
+header {
+    color: #fff;
+    padding: 10px 0;
+    text-align: center; /* This will center the contents of the header */
+}
+
+.branding {
+    display: inline-block; /* This will make the .branding div an inline element */
+}
+
+.branding a {
+    text-decoration: none;
+}
+
+.branding h1 {
+    color: darkorange;
+}
+
+.branding img {
+    height: 100px;
+}

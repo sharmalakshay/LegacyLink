@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>User Profile</title>
+    <title>LegacyLink</title>
     <link rel="stylesheet" href="../css/profile.css">
     <script>
         async function retrieveMsgs() {
@@ -34,6 +34,7 @@
 </head>
 
 <body onload="retrieveMsgs()">
+    <%- include('header') %> <!-- Include the header -->
     <h1>Profile of <%= user.username %>
     </h1>
     <ul id="user-msgs"></ul>

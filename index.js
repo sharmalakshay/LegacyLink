@@ -52,11 +52,11 @@ app.get('/', (req, res) => {
             return res.redirect('/dashboard');
         } catch (err) {
             // If the token is not valid, serve the login page
-            res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
+            res.render('login');
         }
     } else {
         // If no token is present, serve the login page
-        res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
+        res.render('login');
     }
 });
 
@@ -71,11 +71,11 @@ app.get('/login', (req, res) => {
             return res.redirect('/dashboard');
         } catch (err) {
             // If the token is not valid, serve the login page
-            res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
+            res.render('login');
         }
     } else {
         // If no token is present, serve the login page
-        res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
+        res.render('login');
     }
 });
 
@@ -102,16 +102,16 @@ app.get('/dashboard', (req, res) => {
             });
         } catch (err) {
             // If the token is not valid, serve the login page
-            res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
+            res.render('login');
         }
     } else {
         // If no token is present, serve the login page
-        res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
+        res.render('login');
     }
 });
 
 app.get('/registration', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html', 'registration.html'));
+    res.render('registration');
 });
 
 app.get('/logout', (req, res) => {
