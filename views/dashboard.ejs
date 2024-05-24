@@ -20,10 +20,10 @@
             <li><%= name.name %>: <%= name.message %></li>
         <% }); %>
     </ul>
-    <form id="name-message-form">
+    <form id="name-message-form" onsubmit="addName(event)">
         <input type="text" id="new-name" placeholder="Enter a new name" required>
         <input type="text" id="new-message" placeholder="Enter a new message" required>
-        <button type="submit" onsubmit="addName()">Add Name and Message</button>
+        <button type="submit">Add Name and Message</button>
     </form>
 
     <!-- Settings modal -->
@@ -38,7 +38,7 @@
             window.location.href = '/logout';
         }
 
-        function addName() {
+        function addName(e) {
             e.preventDefault();
             var name = document.getElementById('new-name').value;
             var message = document.getElementById('new-message').value;
