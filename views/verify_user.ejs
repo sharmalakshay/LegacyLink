@@ -6,27 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify | LegacyLink</title>
     <!-- Include CSS styles -->
-    <link rel="stylesheet" href="../css/forgot_password.css">
+    <link rel="stylesheet" href="../css/verify_user.css">
 </head>
 
 <body>
     <%- include('header') %> <!-- Include the header -->
     <form id="verify-form" action="/auth/verify_user" method="POST">
-        <label for="how_many_messages">How many messages have you saved on LegacyLink?</label>
-        <select name="how_many_messages" id="how_many_messages" required>
-            <option value="0">0</option>
-            <option value="1">1 to 5</option>
-            <option value="2">5 to 10</option>
-            <option value="3">More than 10</option>
-        </select>
 
-        <label for="how_many_names">How many names have you saved on LegacyLink?</label>
-        <select name="how_many_names" id="how_many_names" required>
-            <option value="0">0</option>
-            <option value="1">1 to 5</option>
-            <option value="2">5 to 10</option>
-            <option value="3">More than 10</option>
-        </select>
+        <div class="form-header">
+            <h3>Please answer all the questions with the best of your knowledge</h3>
+        </div>
+
+        <div class="form-group">
+            <label for="how_many_messages">How many messages have you saved on LegacyLink?</label>
+            <select name="how_many_messages" id="how_many_messages" required>
+                <option value="0">0</option>
+                <option value="1">1 to 5</option>
+                <option value="2">5 to 10</option>
+                <option value="3">More than 10</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="how_long_using">How long have you been using LegacyLink?</label>
+            <select name="how_long_using" id="how_long_using" required>
+                <option value="0">Less than a month</option>
+                <option value="1">1 to 6 months</option>
+                <option value="2">6 months to 1 year</option>
+                <option value="3">More than 1 year</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="which_device">Which brand of device do you usually use to access LegacyLink?</label>
+            <input type="text" name="which_device" id="which_device" required>
+        </div>
+
+        <div class="form-group">
+            <label for="last_login">When was the last time you logged into LegacyLink?</label>
+            <select name="last_login" id="last_login" required>
+                <option value="0">Today</option>
+                <option value="1">Within the last week</option>
+                <option value="2">Within the last month</option>
+                <option value="3">More than a month ago</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="recent_activity">What time of day do you usually access LegacyLink?</label>
+            <select name="recent_activity" id="recent_activity" required>
+                <option value="0">Morning (6 AM - 12 PM)</option>
+                <option value="1">Afternoon (12 PM - 6 PM)</option>
+                <option value="2">Evening (6 PM - 12 AM)</option>
+                <option value="3">Night (12 AM - 6 AM)</option>
+            </select>
+        </div>
+        
+        <input type="hidden" name="email" value="<%= email %>">       
 
         <button id="verify-button" type="submit">Verify</button>
     </form>

@@ -135,7 +135,7 @@ app.get('/forgot_password', (req, res) => {
 
 app.get('/verify_user', (req, res) => {
     if (!req.session.redirectedFromForgotPassword) {
-        return res.status(403).send('Access denied');
+        return res.redirect('/forgot_password');
     }
     delete req.session.redirectedFromForgotPassword;
     const email = req.query.email;
