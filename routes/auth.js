@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
+const { sendEmail } = require('./emailservice');
 
 router.post('/register', async (req, res) => {
     try {
@@ -64,7 +65,16 @@ router.post('/forgot_password', async (req, res) => {
         }
         else {
             req.session.redirectedFromForgotPassword = true;
-            return res.redirect('/verify_user?email=' + email);
+            // send email to user
+            const subject = 'Reset Password';
+            const html = `<p>Click <a href="${process.env.BASE_URL}/verify_user?email=${email}">here</a> to reset your password</p>`;
+            sendEmail(email, subject, html).then(() => {
+                return res.redirect('/verify_user?email=' + email);
+            })
+            .catch((error) => {
+                console.error(error);
+                return res.redirect('/forgot_password?error=' + error.message);
+            });          
         }
     } catch (error) {
         console.error(error.message);

@@ -34,6 +34,12 @@ form {
     margin-bottom: 15px;
 }
 
+.form-title {
+    font-size: 14px;
+    padding-bottom: 25px;
+    text-align: center;
+}
+
 /* Form input styles */
 input[type="text"] {
     width: 100%;

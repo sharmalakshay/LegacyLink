@@ -7,6 +7,8 @@ const path = require('path');
 const User = require('./models/User');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const { sendEmail } = require('./routes/emailservice');
 
 const app = express();
 
@@ -39,12 +41,11 @@ mongoose.connect(mongoURL, {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware for session management
-const session = require('express-session');
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // set to true if using https
+    cookie: { secure: process.env.COOKIE_SECURE === 'true' } // Set secure cookie to true in production (https)
 }));
 
 // Use authentication routes
