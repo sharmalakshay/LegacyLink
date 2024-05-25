@@ -31,7 +31,6 @@ form {
 }
 
 /* Form input styles */
-input[type="text"],
 input[type="email"],
 input[type="password"] {
     width: 100%;
@@ -77,7 +76,7 @@ button:hover {
 }
 
 .extra-links a {
-    color: red;
+    color: #007bff;
     text-decoration: none;
 }
 

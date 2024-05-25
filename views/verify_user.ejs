@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify | LegacyLink</title>
+    <!-- Include CSS styles -->
+    <link rel="stylesheet" href="../css/forgot_password.css">
+</head>
+
+<body>
+    <%- include('header') %> <!-- Include the header -->
+    <form id="verify-form" action="/auth/verify_user" method="POST">
+        <label for="how_many_messages">How many messages have you saved on LegacyLink?</label>
+        <select name="how_many_messages" id="how_many_messages" required>
+            <option value="0">0</option>
+            <option value="1">1 to 5</option>
+            <option value="2">5 to 10</option>
+            <option value="3">More than 10</option>
+        </select>
+
+        <label for="how_many_names">How many names have you saved on LegacyLink?</label>
+        <select name="how_many_names" id="how_many_names" required>
+            <option value="0">0</option>
+            <option value="1">1 to 5</option>
+            <option value="2">5 to 10</option>
+            <option value="3">More than 10</option>
+        </select>
+
+        <button id="verify-button" type="submit">Verify</button>
+    </form>
+    <div class="extra-links">
+        <a href="login">Login</a> | <a href="registration">Register</a>
+    </div>

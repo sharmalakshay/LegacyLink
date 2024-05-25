@@ -32,18 +32,18 @@ router.post('/login', async (req, res) => {
         const user = await User.findOne({ email }).select('+password');
         if (!user) {
             // handle user not found
-            console.error('User not found');
+            // console.error('User not found');
             return res.status(404).json({ message: 'User not found' });
         } else {
             // Check password
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 // handle invalid credentials
-                console.error('Invalid credentials');
+                // console.error('Invalid credentials');
                 return res.status(401).json({ message: 'Invalid credentials' });
             } else {
                 // handle login success
-                console.log('Login successful');
+                // console.log('Login successful');
                 const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
                 return res.status(200).json({ message: 'Login successful', token });
             }
@@ -54,6 +54,29 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.post('/forgot_password', async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne ({ email });
+        if (!user) {
+            console.log(req.body);
+            const error = 'User not found';
+            return res.redirect('/forgot_password?error=User not found');
+        }
+        else {
+            req.session.redirectedFromForgotPassword = true;
+            return res.redirect('/verify_user?email=' + email);
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
+router.post('/verify_user', async (req, res) => {
+    res.redirect('/');
+});
+
 router.post('/retrieve_msgs', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -61,18 +84,18 @@ router.post('/retrieve_msgs', async (req, res) => {
         const user = await User.findOne({ username }).select('+password');
         if (!user) {
             // handle user not found
-            console.error('User not found');
+            // console.error('User not found');
             return res.status(404).json({ message: 'User not found' });
         } else {
             // Check password
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 // handle invalid credentials
-                console.error('Invalid credentials');
+                // console.error('Invalid credentials');
                 return res.status(401).json({ message: 'Invalid credentials' });
             } else {
                 // handle login success
-                console.log('Password correct');
+                // console.log('Password correct');
                 return res.status(200).json({ msgs: user.messages });
             }
         }
