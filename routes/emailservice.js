@@ -1,10 +1,11 @@
+const { name } = require('ejs');
 const { Resend } = require('resend');
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function setupEmailService() {
     // Get the domains from Resend
     const resend_response = await resend.domains.list();
-    let domains = resend_response.data;
+    let domains = resend_response.data.data;
 
     if (!Array.isArray(domains)) {
         domains = [];
@@ -15,13 +16,19 @@ async function setupEmailService() {
         const domain = await resend.domains.create({
             name: process.env.EMAIL_DOMAIN,
         });
-        domains.push(domain);
+        domains.push(
+            { 
+                id: domain.id,
+                name: domain.name,
+                region: domain.region,
+                status: domain.status,
+                created_at: domain.created_at
+            }
+        );
     }
 
-    console.log(domains);
-
     // Check if the domain is verified
-    const email_domain = domains.find((domain) => domain.name === process.env.EMAIL_DOMAIN);
+    const email_domain = domains.find((domain) => domain.data.name === process.env.EMAIL_DOMAIN);
 
     if (!email_domain) {
         throw new Error(`Domain with name ${process.env.EMAIL_DOMAIN} not found`);
