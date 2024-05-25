@@ -19,8 +19,13 @@ async function setupEmailService() {
     }
 
     // Check if the domain is verified
-    const email_domain = domains.find(domain => domain.name === process.env.EMAIL_DOMAIN);
-    if (!email_domain || email_domain.status !== 'verified') {
+    const email_domain = domains.find((domain) => domain.name === process.env.EMAIL_DOMAIN);
+
+    if (!email_domain) {
+        throw new Error(`Domain with name ${process.env.EMAIL_DOMAIN} not found`);
+    }
+
+    if (email_domain.status !== 'verified') {
         // If the domain is not verified, verify it
         const domain_id = email_domain.id;
         const emailDomainVerification = await resend.domains.verify(domain_id);
