@@ -3,7 +3,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function setupEmailService() {
     // Get the domains from Resend
-    const domains = await resend.domains.list();
+    const resend_response = await resend.domains.list();
+    const domains = resend_response.data;
 
     // if no domain is found, create a new domain
     if (domains.length === 0) {
