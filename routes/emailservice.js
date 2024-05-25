@@ -6,6 +6,10 @@ async function setupEmailService() {
     const resend_response = await resend.domains.list();
     const domains = resend_response.data;
 
+    if (!Array.isArray(domains)) {
+        domains = [];
+    }
+
     // if no domain is found, create a new domain
     if (domains.length === 0) {
         const domain = await resend.domains.create({
