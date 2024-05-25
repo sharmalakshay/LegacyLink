@@ -18,6 +18,8 @@ async function setupEmailService() {
         domains.push(domain);
     }
 
+    console.log(domains);
+
     // Check if the domain is verified
     const email_domain = domains.find((domain) => domain.name === process.env.EMAIL_DOMAIN);
 
