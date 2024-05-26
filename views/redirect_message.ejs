@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password | LegacyLink</title>
+    <!-- Include CSS styles -->
+    <link rel="stylesheet" href="../css/reset_password.css">
+</head>
+
+<body>
+    <%- include('header') %> <!-- Include the header -->
+    
+    <% if (typeof message != 'undefined') { %>
+        <div class="message">
+            <%= message %> <!-- Display the message -->
+        </div>
+    <% } %>
+
+    <script>
+        // redirect to the root URL after 2 seconds
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 2000);
+    </script>
+</body>

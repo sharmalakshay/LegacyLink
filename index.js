@@ -54,6 +54,7 @@ app.use('/auth', authRoutes);
 app.get('/', (req, res) => {
     // Check if a JWT token is present in the cookies
     const token = req.cookies.token;
+    const displayMessage = req.query.displayMessage;
     if (token) {
         try {
             // Verify the token
@@ -116,7 +117,7 @@ app.get('/dashboard', (req, res) => {
         }
     } else {
         // If no token is present, serve the login page
-        res.render('login');
+        res.redirect('/login');
     }
 });
 
@@ -135,12 +136,22 @@ app.get('/forgot_password', (req, res) => {
 });
 
 app.get('/verify_user', (req, res) => {
-    if (!req.session.redirectedFromForgotPassword) {
+    if (!req.session.verifyUser) {
         return res.redirect('/forgot_password');
     }
-    delete req.session.redirectedFromForgotPassword;
+    delete req.session.verifyUser;
     const email = req.query.email;
-    res.render('verify_user', { email });
+    const error = req.query.error;
+    res.render('verify_user', { email, error });
+});
+
+app.get('/reset_password', (req, res) => {
+    if (!req.session.resetPassword) {
+        return res.redirect('/forgot_password');
+    }
+    delete req.session.resetPassword;
+    const email = req.query.email;
+    res.render('reset_password', { email });
 });
 
 app.use((req, res, next) => {

@@ -10,6 +10,10 @@
 </head>
 
 <body>
+    <% if (typeof displayMessage != 'undefined') { %>
+        <script></script>alert(unescape('<%= escape(displayMessage) %>'));</script>
+    <% } %>
+
     <%- include('header') %> <!-- Include the header -->
 
     <h1>Welcome, <span id="username"><%= user.username %></span></h1>

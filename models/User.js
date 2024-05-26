@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false },
-    messages: [messageSchema], // add this line
+    messages: [messageSchema],
+    verification_code: { type: String, default: null },
 });
 
 const User = mongoose.model('User', userSchema, 'users');

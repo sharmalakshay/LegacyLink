@@ -11,6 +11,14 @@
 
 <body>
     <%- include('header') %> <!-- Include the header -->
+    <div id="verify-user-error">
+        <!-- Error message will be displayed here -->
+        <% if (typeof error != 'undefined') { %>
+            <div class="error">
+                <%= error %>
+            </div>
+        <% } %>
+    </div>
     <form id="verify-form" action="/auth/verify_user" method="POST">
 
         <span class="form-title">An email with the Verification Code has been sent to your email address.</span>
