@@ -34,10 +34,13 @@
 </head>
 
 <body onload="retrieveMsgs()">
-    <%- include('header') %> <!-- Include the header -->
+    <%- include('header') %>
+    
     <h1>Profile of <%= user.username %>
     </h1>
     <ul id="user-msgs"></ul>
+
+    <%- include('footer') %>
 </body>
 
 </html>

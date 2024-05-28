@@ -157,6 +157,14 @@ app.get('/reset_password', (req, res) => {
     res.render('reset_password', { email });
 });
 
+app.get('/terms', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'terms.html'));
+});
+
+app.get('/privacy', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'privacy.html'));
+});
+
 app.use((req, res, next) => {
     if (req.path.split('/').length > 2) {
         // res.status(404).send('Not found');
