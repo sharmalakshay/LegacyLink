@@ -5,21 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LegacyLink</title>
-    <!-- Include CSS styles -->
     <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 
 <body>
     <% if (typeof displayMessage != 'undefined') { %>
-        <script></script>alert(unescape('<%= escape(displayMessage) %>'));</script>
+        <script>alert(unescape('<%= escape(displayMessage) %>'));</script>
     <% } %>
 
-    <%- include('header') %> <!-- Include the header -->
+    <%- include('header') %>
 
     <h1>Welcome, <span id="username"><%= user.username %></span></h1>
     <button onclick="logout()" id="logout-button">Logout</button>
 
-    <!-- List management section -->
     <h2>List of Names</h2>
     <ul id="name-list">
         <% user.messages.forEach(name => { %>
@@ -32,7 +30,6 @@
         <button type="submit">Add Name and Message</button>
     </form>
 
-    <!-- Settings modal -->
     <div id="settings-modal" class="modal">
         <!-- Settings form will be displayed here -->
     </div>

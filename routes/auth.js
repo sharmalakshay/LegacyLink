@@ -5,6 +5,7 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
 const { sendEmail } = require('./emailservice');
+const { encrypt, decrypt } = require('../utils/encryption');
 
 router.post('/register', async (req, res) => {
     try {
@@ -130,41 +131,35 @@ router.post('/reset_password', async (req, res) => {
 router.post('/retrieve_msgs', async (req, res) => {
     try {
         const { username, password } = req.body;
-        // Find user by username
         const user = await User.findOne({ username }).select('+password');
         if (!user) {
-            // handle user not found
-            // console.error('User not found');
             return res.status(404).json({ message: 'User not found' });
-        } else {
-            // Check password
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
-                // handle invalid credentials
-                // console.error('Invalid credentials');
-                return res.status(401).json({ message: 'Invalid credentials' });
-            } else {
-                // handle login success
-                // console.log('Password correct');
-                return res.status(200).json({ msgs: user.messages });
-            }
         }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        const decryptedMessages = user.messages.map(msg => ({
+            name: msg.name,
+            message: decrypt(msg.iv, msg.message)
+        }));
+        return res.status(200).json({ msgs: decryptedMessages });
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ message: 'Server Error' });
     }
 });
 
+// Add name and message route
 router.post('/add_name', async (req, res) => {
     try {
         const { username, name, message } = req.body;
-        const user = await User.findOne({
-            username
-        });
+        const user = await User.findOne({ username });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        user.messages.push({ name, message });
+        const { iv, encryptedData } = encrypt(message);
+        user.messages.push({ name, message: encryptedData, iv });
         await user.save();
         res.status(200).json({ message: 'Message added successfully' });
     } catch (error) {

@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const { sendEmail } = require('./routes/emailservice');
+const { decrypt } = require('./utils/encryption'); // Import the decrypt function
 
 const app = express();
 
@@ -91,33 +92,34 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-    // Check if a JWT token is present in the cookies
     const token = req.cookies.token;
     if (token) {
         try {
-            // Verify the token
             jwt.verify(token, process.env.JWT_SECRET);
-            // If the token is valid, redirect to the dashboard
             const user_id = jwt.decode(token).id;
             User.findOne({ _id: user_id })
-            .then(user => {
-                if (user) {
-                    // Render the dashboard page with the user's data
-                    res.render('dashboard', { user: user });
-                } else {
-                    res.status(404).send('User Info Not found');
-                }
-            })
-            .catch(err => {
-                res.status(500).send('Server error');
-            });
+                .then(user => {
+                    if (user) {
+                        // Decrypt messages
+                        const decryptedMessages = user.messages.map(msg => ({
+                            name: msg.name,
+                            message: decrypt(msg.iv, msg.message)
+                        }));
+                        // Render the dashboard page with the user's data
+                        res.render('dashboard', { user: { ...user.toObject(), messages: decryptedMessages } });
+                    } else {
+                        res.status(404).send('User Info Not found');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    res.status(500).send('Server error');
+                });
         } catch (err) {
             console.error(err);
-            // If the token is not valid, serve the login page
             res.redirect('/login');
         }
     } else {
-        // If no token is present, serve the login page
         res.redirect('/login');
     }
 });
