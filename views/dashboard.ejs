@@ -17,21 +17,50 @@
 
     <h1>Welcome, <span id="username"><%= user.username %></span></h1>
     <button onclick="logout()" id="logout-button">Logout</button>
+    <button onclick="openModal()" id="settings-button">Settings</button>
+    
+    <!-- Profile Settings Modal -->
+    <div id="profile-settings" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h2>Settings</h2>
+            <p>Settings for account, privacy, and more will be added here.</p>
+        </div>
+    </div>
 
-    <h2>List of Names</h2>
-    <ul id="name-list">
-        <% user.messages.forEach(name => { %>
-            <li><%= name.name %>: <%= name.message %></li>
-        <% }); %>
-    </ul>
-    <form id="name-message-form" onsubmit="addName(event)">
-        <input type="text" id="new-name" placeholder="Enter a new name" required>
-        <textarea id="new-message" placeholder="Enter a new message" required></textarea>
-        <button type="submit">Add Name and Message</button>
-    </form>
-
-    <div id="settings-modal" class="modal">
-        <!-- Settings form will be displayed here -->
+    <!-- List of Names and Messages -->
+    <div id="message-list">
+        <h2>List of Names and Messages</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Message</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% user.messages.forEach((message, index) => { %>
+                    <tr class="msg">
+                        <td><%= message.name %></td>
+                        <td><%= message.message %></td>
+                        <td>
+                            <button class="action-button edit-msg-button" onclick="editMessage(<%= index %>)">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="action-button delete-msg-button" onclick="deleteMessage(<%= index %>)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        <form id="name-message-form" onsubmit="addName(event)">
+            <input type="text" id="new-name" placeholder="Enter a new name" required>
+            <textarea id="new-message" placeholder="Enter a new message" required></textarea>
+            <button type="submit">Add Name and Message</button>
+        </form>
     </div>
 
     <script>
@@ -69,6 +98,15 @@
                 })
                 .catch(error => console.error('Error:', error));
         }
+
+        function openModal() {
+            document.getElementById('profile-settings').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('profile-settings').style.display = 'none';
+        }
+
     </script>
 
     <%- include('footer') %>

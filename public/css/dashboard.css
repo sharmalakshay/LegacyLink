@@ -26,17 +26,64 @@ h1, h2 {
     float: right;
 }
 
-#name-list {
+#profile-settings {
+    margin-top: 20px;
+}
+
+#profile-settings h2 {
+    margin-bottom: 10px;
+}
+
+#profile-form input[type="text"],
+#profile-form input[type="email"],
+#profile-form input[type="password"] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+#profile-form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#profile-form button:hover {
+    background-color: #45a049;
+}
+
+#message-list {
+    margin-top: 20px;
+}
+
+#message-list ul {
     list-style-type: none;
     padding: 0;
 }
 
-#name-list li {
+#message-list li {
     background-color: #fff;
     border: 1px solid #ddd;
-    margin: 10px 0;
+    margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
+}
+
+#message-list button {
+    margin-left: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 #name-message-form {
@@ -76,6 +123,19 @@ h1, h2 {
     background-color: #45a049;
 }
 
+#settings-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    float: right;
+}
+
 #settings-modal {
     display: none;
     position: fixed;
@@ -86,4 +146,60 @@ h1, h2 {
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.4);
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Styles for the table */
+#message-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#message-list th, #message-list td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.delete-msg-button {
+    background-color: #dc3545 !important;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
 }
