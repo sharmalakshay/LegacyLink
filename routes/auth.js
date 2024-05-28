@@ -46,6 +46,7 @@ router.post('/login', async (req, res) => {
                 // handle login success
                 // console.log('Login successful');
                 const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+                res.cookie('token', token, { httpOnly: true }); // set cookie
                 return res.status(200).json({ message: 'Login successful', token });
             }
         }

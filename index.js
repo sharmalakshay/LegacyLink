@@ -112,8 +112,9 @@ app.get('/dashboard', (req, res) => {
                 res.status(500).send('Server error');
             });
         } catch (err) {
+            console.error(err);
             // If the token is not valid, serve the login page
-            res.render('login');
+            res.redirect('/login');
         }
     } else {
         // If no token is present, serve the login page
