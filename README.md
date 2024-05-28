@@ -4,7 +4,7 @@ LegacyLink is a platform that allows users to store final messages for their lov
 
 ## Live App
 
-You can access the live application at [https://legacylink.adaptable.app/](https://legacylink.adaptable.app/)
+You can access the live application at [https://legacylink.online/](https://legacylink.online/)
 
 ## Features (In Progress)
 
