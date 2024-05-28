@@ -89,3 +89,27 @@ button:hover {
 .extra-links a:hover {
     text-decoration: underline;
 }
+
+/* Consent Checkboxes */
+input[type="checkbox"] {
+    margin: 10px 0;
+    
+    /* Add some margin to the top and bottom of each checkbox */
+}
+
+label {
+    margin-left: 5px;
+    font-size: 14px;
+    /* Add some margin to the left of each label */
+}
+
+label a {
+    color: #007bff;
+    text-decoration: none;
+    /* Style the links in the labels */
+}
+
+label a:hover {
+    text-decoration: underline;
+    /* Add underline on hover to the links in the labels */
+}

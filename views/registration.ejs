@@ -15,6 +15,23 @@
         <input type="text" id="username" placeholder="Username" required>
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required>
+
+        <!-- Consent Checkboxes -->
+        <div>
+            <input type="checkbox" id="privacy-consent" required>
+            <label for="privacy-consent">I have read and accept the <a href="/privacy" target="_blank">Privacy Policy</a>.</label>
+        </div>
+        <div>
+            <input type="checkbox" id="terms-consent" required>
+            <label for="terms-consent">I have read and agree to the <a href="/terms" target="_blank">Terms of Service</a>.</label>
+        </div>
+        <div>
+            <input type="checkbox" id="demise-consent" required>
+            <label for="demise-consent">I consent to allow the platform to verify my demise in the event of my passing.</label>
+        </div>
+
+        <br>
+
         <button id="register-button" type="submit">Register</button>
     </form>
 
