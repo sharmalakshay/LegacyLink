@@ -19,6 +19,7 @@
             <li><strong>Encrypted Storage:</strong> Both names and messages are encrypted using advanced encryption techniques before being stored in our database, ensuring their confidentiality.</li>
             <li><strong>Message Management:</strong> You can create, edit, and delete messages at any time, ensuring that your messages are always up-to-date.</li>
             <li><strong>Demise Verification:</strong> We verify your demise through a secure process to ensure that your messages are delivered only when you pass away.</li>
+            <li style="text-align: center;"><strong>Total Users Count:</strong> <span id="total-users"></span></li>
         </ul>
 
     </div>
@@ -80,6 +81,16 @@
                 alert('Registration failed');
             }
         });
+
+        // Fetch total users count
+        fetch('/auth/get_user_count')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('total-users').textContent = data.count;
+            })
+            .catch(error => {
+                console.error('Total users count error:', error);
+            });
     </script>
 
     <%- include('footer') %>

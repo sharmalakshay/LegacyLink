@@ -188,4 +188,15 @@ router.post('/delete_name', async (req, res) => {
     }
 });
 
+// Get User Count
+router.get('/get_user_count', async (req, res) => {
+    try {
+        const count = await User.countDocuments();
+        res.status(200).json({ count });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 module.exports = router;
