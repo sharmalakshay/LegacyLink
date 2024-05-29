@@ -102,8 +102,8 @@ app.get('/dashboard', (req, res) => {
                     if (user) {
                         // Decrypt messages
                         const decryptedMessages = user.messages.map(msg => ({
-                            name: msg.name,
-                            message: decrypt(msg.iv, msg.message)
+                            name: decrypt(msg.name_iv, msg.name),
+                            message: decrypt(msg.message_iv, msg.message)
                         }));
                         // Render the dashboard page with the user's data
                         res.render('dashboard', { user: { ...user.toObject(), messages: decryptedMessages } });

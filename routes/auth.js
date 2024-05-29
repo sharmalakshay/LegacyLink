@@ -140,8 +140,8 @@ router.post('/retrieve_msgs', async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
         const decryptedMessages = user.messages.map(msg => ({
-            name: msg.name,
-            message: decrypt(msg.iv, msg.message)
+            name: decrypt(msg.name_iv, msg.name),
+            message: decrypt(msg.message_iv, msg.message)
         }));
         return res.status(200).json({ msgs: decryptedMessages });
     } catch (error) {
@@ -158,8 +158,14 @@ router.post('/add_name', async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const { iv, encryptedData } = encrypt(message);
-        user.messages.push({ name, message: encryptedData, iv });
+        const encryptedName = encrypt(name);
+        const encryptedMessage = encrypt(message);
+        user.messages.push({
+            name: encryptedName.encryptedData,
+            name_iv: encryptedName.iv,
+            message: encryptedMessage.encryptedData,
+            message_iv: encryptedMessage.iv
+        });
         await user.save();
         res.status(200).json({ message: 'Message added successfully' });
     } catch (error) {
