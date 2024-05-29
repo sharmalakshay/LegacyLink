@@ -68,7 +68,7 @@ app.get('/', (req, res) => {
         }
     } else {
         // If no token is present, serve the login page
-        res.render('login');
+        res.render('registration');
     }
 });
 

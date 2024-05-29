@@ -7,15 +7,15 @@ input,
 button {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
 }
 
 /* Body styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -112,4 +112,47 @@ label a {
 label a:hover {
     text-decoration: underline;
     /* Add underline on hover to the links in the labels */
+}
+
+.welcome-section, #registration-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-section h1 {
+    color: #333;
+    text-align: center;
+}
+
+.welcome-section p {
+    color: #007bff;
+    line-height: 1.6;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+.welcome-section ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.welcome-section ul li {
+    margin: 10px 0;
+    color: #555;
+    line-height: 1.6;
+    list-style: none;
+}
+
+.welcome-section a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.welcome-section a:hover {
+    text-decoration: underline;
 }

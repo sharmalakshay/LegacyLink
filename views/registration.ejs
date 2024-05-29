@@ -11,6 +11,26 @@
 <body>
     <%- include('header') %>
 
+    <div class="welcome-section">
+        <h1>Welcome to LegacyLink</h1>
+        <p>LegacyLink is a secure platform designed to help you store and deliver final messages to your loved ones. Our service ensures that your messages are kept safe and confidential until they need to be delivered.</p>
+
+        <ul>
+            <li><strong>Encrypted Storage:</strong> Your messages are stored using advanced encryption to ensure their confidentiality.</li>
+            <li><strong>Message Management:</strong> You can create, edit, and delete messages at any time, ensuring that your messages are always up-to-date.</li>
+            <li><strong>Demise Verification:</strong> We verify your demise through a secure process to ensure that your messages are delivered only when you pass away.</li>
+        </ul>
+
+    </div>
+
+    <br>
+
+    <div class="extra-links">
+        <a href="login">Already have an account? Login</a>
+    </div>
+
+    <br>
+
     <form id="registration-form">
         <input type="text" id="username" placeholder="Username" required>
         <input type="email" id="email" placeholder="Email" required>
@@ -34,10 +54,6 @@
 
         <button id="register-button" type="submit">Register</button>
     </form>
-
-    <div class="extra-links">
-        <a href="login">Already have an account? Login</a>
-    </div>
 
     <script>
         document.getElementById('registration-form').addEventListener('submit', async (event) => {
