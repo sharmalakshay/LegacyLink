@@ -145,7 +145,7 @@ router.post('/retrieve_msgs', async (req, res) => {
         }));
         return res.status(200).json({ msgs: decryptedMessages });
     } catch (error) {
-        console.error(error.message);
+        // console.error(error.message);
         res.status(500).json({ message: 'Server Error' });
     }
 });
@@ -162,6 +162,20 @@ router.post('/add_name', async (req, res) => {
         user.messages.push({ name, message: encryptedData, iv });
         await user.save();
         res.status(200).json({ message: 'Message added successfully' });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Delete message route
+router.post('/delete_name', async (req, res) => {
+    try {
+        const { username, index } = req.body;
+        const user = await User.findOne({ username });
+        user.messages.splice(index, 1);
+        await user.save();
+        res.status(200).json({ message: 'Message deleted successfully' });
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server Error');

@@ -15,7 +15,13 @@
 
     <%- include('header') %>
 
-    <h1>Welcome, <span id="username"><%= user.username %></span></h1>
+    <h1>
+        Welcome, <span id="username"><%= user.username %></span>
+    </h1>
+    <span>
+        Your password-protected profile can be viewed at:
+        <a target="_blank" href="<%= process.env.SITE_ADDRESS %>/<%= user.username %>"><%= process.env.SITE_ADDRESS %>/<%= user.username %></a>
+    </span>
     <button onclick="logout()" id="logout-button">Logout</button>
     <button onclick="openModal()" id="settings-button">Settings</button>
     
@@ -45,9 +51,9 @@
                         <td><%= message.name %></td>
                         <td><%= message.message %></td>
                         <td>
-                            <button class="action-button edit-msg-button" onclick="editMessage(<%= index %>)">
+                            <!-- <button class="action-button edit-msg-button" onclick="editMessage(<%= index %>)">
                                 <i class="fa fa-pencil"></i>
-                            </button>
+                            </button> -->
                             <button class="action-button delete-msg-button" onclick="deleteMessage(<%= index %>)">
                                 <i class="fa fa-trash"></i>
                             </button>
@@ -83,20 +89,20 @@
                 },
                 body: JSON.stringify({ username: "<%= user.username %>", name, message })
             })
-                .then(response => {
-                    if (response.status === 200) {
-                        alert('Message added successfully');
-                        window.location.href = '/dashboard';
-                    } else {
-                        return response.json();
-                    }
-                })
-                .then(data => {
-                    if (data) {
-                        alert(data.message);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+            .then(response => {
+                if (response.status === 200) {
+                    alert('Message added successfully');
+                    window.location.href = '/dashboard';
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
 
         function openModal() {
@@ -105,6 +111,35 @@
 
         function closeModal() {
             document.getElementById('profile-settings').style.display = 'none';
+        }
+
+        function deleteMessage(index) {
+            if (!confirm('Are you sure you want to delete this message?')) {
+                return;
+            }
+            var token = localStorage.getItem('token');
+            fetch('/auth/delete_name', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ username: "<%= user.username %>", index })
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    alert('Message deleted successfully');
+                    window.location.href = '/dashboard';
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
 
     </script>
