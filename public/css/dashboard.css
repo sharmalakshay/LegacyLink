@@ -2,11 +2,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
-    padding: 0 20px;
-}
-
-h1, h2 {
-    color: #333;
+    /* padding: 0 20px; */
 }
 
 #username {
@@ -61,19 +57,7 @@ h1, h2 {
 
 #message-list {
     margin-top: 20px;
-}
-
-#message-list ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-#message-list li {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 20px;
 }
 
 #message-list button {
@@ -187,6 +171,7 @@ h1, h2 {
 #message-list table {
     width: 100%;
     border-collapse: collapse;
+    background-color: #fff;
 }
 
 #message-list th, #message-list td {
@@ -202,4 +187,24 @@ h1, h2 {
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
+}
+
+header{
+    background-color: #f8f9fa;
+    color: black;
+    text-align: center;
+}
+
+#dashboard-nav {
+    background-color: #f8f9fa;
+    overflow: hidden;
+    color: gray;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
+    padding: 0 10px;
+    margin-top: -20px;
+}
+
+a {
+    color: teal;
+    text-decoration: none;
 }

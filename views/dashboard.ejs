@@ -15,15 +15,17 @@
 
     <%- include('header') %>
 
-    <h1>
-        Welcome, <span id="username"><%= user.username %></span>
-    </h1>
-    <span>
-        Your password-protected profile can be viewed at:
-        <a target="_blank" href="<%= process.env.SITE_ADDRESS %>/<%= user.username %>"><%= process.env.SITE_ADDRESS %>/<%= user.username %></a>
-    </span>
-    <button onclick="logout()" id="logout-button">Logout</button>
-    <!-- <button onclick="openModal()" id="settings-button">Settings</button> -->
+    <nav id="dashboard-nav">
+        <h1>
+            Welcome, <span id="username"><%= user.username %></span>
+        </h1>
+        <span>
+            Your password-protected profile can be viewed at:
+            <a target="_blank" href="<%= process.env.SITE_ADDRESS %>/<%= user.username %>"><%= process.env.SITE_ADDRESS %>/<%= user.username %></a>
+        </span>
+        <button onclick="logout()" id="logout-button">Logout</button>
+        <!-- <button onclick="openModal()" id="settings-button">Settings</button> -->
+    </nav>
     
     <!-- Profile Settings Modal -->
     <div id="profile-settings" class="modal">
@@ -36,7 +38,7 @@
 
     <!-- List of Names and Messages -->
     <div id="message-list">
-        <h2>List of Names and Messages</h2>
+        <!-- <h2>List of Names and Messages</h2> -->
         <table>
             <thead>
                 <tr>
@@ -46,20 +48,26 @@
                 </tr>
             </thead>
             <tbody>
-                <% user.messages.forEach((message, index) => { %>
-                    <tr class="msg">
-                        <td><%= message.name %></td>
-                        <td><%= message.message %></td>
-                        <td>
-                            <!-- <button class="action-button edit-msg-button" onclick="editMessage(<%= index %>)">
-                                <i class="fa fa-pencil"></i>
-                            </button> -->
-                            <button class="action-button delete-msg-button" onclick="deleteMessage(<%= index %>)">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </td>
+                <% if (user.messages.length === 0) { %>
+                    <tr>
+                        <td colspan="3">No messages stored</td>
                     </tr>
-                <% }); %>
+                <% } else { %>
+                    <% user.messages.forEach((message, index) => { %>
+                        <tr class="msg">
+                            <td><%= message.name %></td>
+                            <td><%= message.message %></td>
+                            <td>
+                                <!-- <button class="action-button edit-msg-button" onclick="editMessage(<%= index %>)">
+                                    <i class="fa fa-pencil"></i>
+                                </button> -->
+                                <button class="action-button delete-msg-button" onclick="deleteMessage(<%= index %>)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } %>
             </tbody>
         </table>
         <form id="name-message-form" onsubmit="addName(event)">
