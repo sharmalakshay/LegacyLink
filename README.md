@@ -28,14 +28,29 @@ You can access the live application at [https://legacylink.online/](https://lega
 
 5. **Password Recovery**: In the event of the user's passing, a trusted individual or family member can request the removal of the password from their profile. This request undergoes thorough verification to ensure authenticity before access is granted.
 
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+* You have installed the latest version of [Node.js and npm](https://nodejs.org/en/download/).
+* You have a Windows/Mac/Linux machine.
+* You have installed [MongoDB](https://www.mongodb.com/try/download/community). If you're using a Mac, you can install MongoDB with Homebrew:
+
+    1. Open your terminal.
+    2. If you haven't installed Homebrew, install it by running: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+    3. Update Homebrew: `brew update`
+    4. Install MongoDB: `brew tap mongodb/brew` and then `brew install mongodb-community`
+    5. To start MongoDB, run: `brew services start mongodb-community`
+
 ## Local Deployment
 
 To deploy the app locally, follow these steps:
 
 1. Clone the repository to your local machine.
 2. Navigate to the project directory in your terminal.
-3. Run `npm install` to install the necessary dependencies.
-4. Run `node index.js` to start the application.
+3. Create .env file using example.env as the base.
+4. Run `npm install` to install the necessary dependencies.
+5. Run `node index.js` to start the application.
 
 ## Contributing
 
