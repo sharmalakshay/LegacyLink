@@ -188,6 +188,25 @@ router.post('/delete_name', async (req, res) => {
     }
 });
 
+// Change password route
+router.post('/change_password', async (req, res) => {
+    try {
+        const { username, currentPassword, newPassword } = req.body;
+        const user = await User.findOne({ username }).select('+password');
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        await user.save();
+        res.status(200).json({ message: 'Password changed successfully' });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 // Get User Count
 router.get('/get_user_count', async (req, res) => {
     try {

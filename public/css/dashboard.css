@@ -9,6 +9,10 @@ body {
     color: #007BFF;
 }
 
+button {
+    border-radius: 4px;
+}
+
 #logout-button {
     background-color: #dc3545;
     color: white;
@@ -153,6 +157,28 @@ body {
     width: 80%; /* Could be more or less, depending on screen size */
 }
 
+/* animation when modal opens */
+.modal.open {
+    animation-name: modalopen;
+    animation-duration: 0.3s;
+}
+
+/* animation when modal closes */
+.modal.close {
+    animation-name: modalclose;
+    animation-duration: 0.4s;
+}
+
+@keyframes modalopen {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+
+@keyframes modalclose {
+    from {opacity: 1}
+    to {opacity: 0}
+}
+
 .close-button {
     color: #aaa;
     float: right;
@@ -207,4 +233,72 @@ header{
 a {
     color: teal;
     text-decoration: none;
+}
+
+#settings h2{
+    color: #333;
+}
+
+#settings-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+#settings-nav li {
+    margin: 0 10px;
+    float: left;
+}
+
+#settings-nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+#settings-nav li a:hover {
+    background-color: #111;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+#account-settings{
+    margin-top: 20px;
+}
+
+.form-group{
+    margin-bottom: 20px;
+}
+
+.form-group label{
+    color: #333;
+}
+
+.form-control{
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.save-button{
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
 }

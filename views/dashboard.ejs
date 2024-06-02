@@ -24,15 +24,96 @@
             <a target="_blank" href="<%= process.env.SITE_ADDRESS %>/<%= user.username %>"><%= process.env.SITE_ADDRESS %>/<%= user.username %></a>
         </span>
         <button onclick="logout()" id="logout-button">Logout</button>
-        <!-- <button onclick="openModal()" id="settings-button">Settings</button> -->
+        <button onclick="openModal()" id="settings-button">Settings</button>
     </nav>
     
-    <!-- Profile Settings Modal -->
-    <div id="profile-settings" class="modal">
+    <!-- Settings Modal -->
+    <div id="settings" class="modal">
         <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <h2>Settings</h2>
-            <p>Settings for account, privacy, and more will be added here.</p>
+            <div id="settings-nav">
+                <ul>
+                    <li><a href="#change-password">Change Password</a></li>
+                    <li><a href="#account-settings">Account Settings</a></li>
+                    <!-- <li><a href="#privacy-settings">Privacy Settings</a></li> -->
+                    <li><a href="#preferences">Preferences</a></li>
+                </ul>
+            </div>
+            <div id="settings-content">
+
+                <div id="account-settings" class="tab-content">
+                    <h2>Account Settings</h2>
+                    <form id="account-settings-form">
+                        <div class="form-group">
+                            <label for="username_edit">Username</label><br>
+                            <input class="form-control" type="text" id="username_edit" value="<%= user.username %>" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label><br>
+                            <input class="form-control" type="email" id="email" value="<%= user.email %>" disabled>
+                        </div>
+                        <!-- <button type="button" onclick="editAccount()" class="save-button">Save</button> -->
+                    </form>
+                </div>
+
+                <div id="privacy-settings" class="tab-content">
+                    <h2>Privacy Settings</h2>
+                    <form id="privacy-settings-form">
+                        <div class="form-group">
+                            <label for="visibility">Visibility</label><br>
+                            <select class="form-control" id="visibility" disabled>
+                                <option value="public" <%= user.visibility === 'public' ? 'selected' : '' %>>Public</option>
+                                <option value="private" <%= user.visibility === 'private' ? 'selected' : '' %>>Private</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label><br>
+                            <input class="form-control" type="password" id="password" disabled>
+                        </div>
+                        <button type="button" onclick="editPrivacy()" class="save-button">Save</button>
+                    </form>
+                </div>
+                
+                <div id="preferences" class="tab-content">
+                    <h2>Preferences</h2>
+                    <form id="preferences-form">
+                        <div class="form-group">
+                            <label for="theme">Theme</label><br>
+                            <select class="form-control" id="theme" disabled>
+                                <option value="light" <%= user.theme === 'light' ? 'selected' : '' %>>Light</option>
+                                <option value="dark" <%= user.theme === 'dark' ? 'selected' : '' %>>Dark</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="language">Language</label><br>
+                            <select class="form-control" id="language" disabled>
+                                <option value="english" <%= user.language === 'english' ? 'selected' : '' %>>English</option>
+                                <option value="spanish" <%= user.language === 'spanish' ? 'selected' : '' %>>Spanish</option>
+                            </select>
+                        </div>
+                        <!-- <button type="button" onclick="editPreferences()" class="save-button">Save</button> -->
+                    </form>
+                </div>
+                
+                <div id="change-password" class="tab-content">
+                    <h2>Change Password</h2>
+                    <form id="change-password-form" onsubmit="changePassword()">
+                        <div class="form-group">
+                            <label for="current-password">Current Password</label><br>
+                            <input class="form-control" type="password" id="current-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password">New Password</label><br>
+                            <input class="form-control" type="password" id="new-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password">Confirm Password</label><br>
+                            <input class="form-control" type="password" id="confirm-password" required>
+                        </div>
+                        <button type="submit" class="save-button">Change</button>
+                    </form>
+                </div>
+
+            </div>
         </div>
     </div>
 
@@ -113,12 +194,22 @@
             .catch(error => console.error('Error:', error));
         }
 
-        function openModal() {
-            document.getElementById('profile-settings').style.display = 'block';
-        }
 
+        const settings_modal = document.getElementById('settings');
+        
+        function openModal() {
+            settings_modal.classList.add('open');
+            settings_modal.classList.remove('close');
+            settings_modal.style.display = 'block';
+        }
+        
         function closeModal() {
-            document.getElementById('profile-settings').style.display = 'none';
+            settings_modal.classList.remove('open');
+            settings_modal.classList.add('close');
+            settings_modal.addEventListener('animationend', () => {
+                // This will be executed after the animation
+                settings_modal.style.display = 'none';
+            }, {once: true}); // The listener is removed after executing once
         }
 
         function deleteMessage(index) {
@@ -137,6 +228,77 @@
             .then(response => {
                 if (response.status === 200) {
                     alert('Message deleted successfully');
+                    window.location.href = '/dashboard';
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        //click anywhere outside of the modal to close it
+        window.onclick = function(event) {
+            var modal = document.getElementById('settings');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Settings Tabs
+        document.querySelectorAll('#settings-nav li a').forEach((tab, index) => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Remove active class from all tabs
+                document.querySelectorAll('#settings-nav li a').forEach((tab) => {
+                    tab.classList.remove('active');
+                });
+
+                // Add active class to clicked tab
+                e.target.classList.add('active');
+
+                // Hide all tab content
+                document.querySelectorAll('.tab-content').forEach((content) => {
+                    content.style.display = 'none';
+                });
+
+                // Show clicked tab content
+                document.querySelector(e.target.getAttribute('href')).style.display = 'block';
+            });
+
+            // Automatically click on the first tab
+            if (index === 0) {
+                tab.click();
+            }
+        });
+
+        function changePassword(){
+            event.preventDefault();
+            var currentPassword = document.getElementById('current-password').value;
+            var newPassword = document.getElementById('new-password').value;
+            var confirmPassword = document.getElementById('confirm-password').value;
+            // Check if new password and confirm password match
+            if (newPassword !== confirmPassword) {
+                alert('New password and confirm password do not match');
+                return;
+            }
+            var token = localStorage.getItem('token');
+            fetch('/auth/change_password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ username: "<%= user.username %>", currentPassword, newPassword })
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    alert('Password changed successfully');
                     window.location.href = '/dashboard';
                 } else {
                     return response.json();
