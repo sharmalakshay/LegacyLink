@@ -98,7 +98,7 @@ router.post('/verify_user', async (req, res) => {
         req.session.resetPassword = true;
         return res.redirect('/reset_password?email=' + email);
     } catch (error) {
-        console.error(error.message);
+        // console.error(error.message);
         res.status(500).json({ message: 'Server Error' });
     }
 });
