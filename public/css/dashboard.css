@@ -206,6 +206,15 @@ button {
     text-align: left;
 }
 
+.add-to-msg-button {
+    background-color: #28a745 !important;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 .delete-msg-button {
     background-color: #dc3545 !important;
     color: white;
@@ -301,4 +310,12 @@ a {
     font-size: 12px;
     margin: 4px 2px;
     cursor: pointer;
+}
+
+.name-in-list{
+    color: #007BFF;
+}
+
+.text-center{
+    text-align: center !important;
 }

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LegacyLink</title>
+
     <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 
@@ -121,10 +122,15 @@
     <div id="message-list">
         <!-- <h2>List of Names and Messages</h2> -->
         <table>
+            <colgroup>
+                <col style="width: 20%">
+                <col style="width: 60%">
+                <col style="width: 20%">
+            </colgroup>
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Message</th>
+                    <th>Messages</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -136,14 +142,27 @@
                 <% } else { %>
                     <% user.messages.forEach((message, index) => { %>
                         <tr class="msg">
-                            <td><%= message.name %></td>
-                            <td><%= message.message %></td>
+                            <td><a href='#!' onclick="" class="name-in-list"><%= message.name %></td></a>
                             <td>
-                                <!-- <button class="action-button edit-msg-button" onclick="editMessage(<%= index %>)">
-                                    <i class="fa fa-pencil"></i>
-                                </button> -->
+                                <table>
+                                    <tr>
+                                        <td><%= message.message %></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">
+                                            <button class="btn btn-xs">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
                                 <button class="action-button delete-msg-button" onclick="deleteMessage(<%= index %>)">
                                     <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="action-button settings-msg-button" onclick="openModal()">
+                                    <i class="fa fa-cog"></i>
                                 </button>
                             </td>
                         </tr>
