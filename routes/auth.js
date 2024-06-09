@@ -168,19 +168,38 @@ router.post('/add_name', async (req, res) => {
     }
 });
 
-// Add message route
+// Add message to name route
 router.post('/add_message', async (req, res) => {
     try {
-        const { username, name_id, message } = req.body;
-        const user = await User.findOne({ username });
+        const { name_id } = req.body;
+        const token = req.cookies.token;
+        const user_id = jwt.decode(token).id;
+        const user = await User.findOne({ _id: user_id });
+        const name = user.names.id(name_id);
+        const encryptedMessage = encrypt('');
+        name.messages.push({ message: encryptedMessage.encryptedData, message_iv: encryptedMessage.iv });
+        await user.save();
+        res.status(200).json({ message: 'Message added successfully', new_msg_id: name.messages[name.messages.length - 1]._id });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Edit message route
+router.post('/edit_message', async (req, res) => {
+    try {
+        const { name_id, msg_id, message } = req.body;
+        const token = req.cookies.token;
+        const user_id = jwt.decode(token).id;
+        const user = await User.findOne({ _id: user_id });
         const encryptedMessage = encrypt(message);
         const name = user.names.id(name_id);
-        name.messages.push({
-            message: encryptedMessage.encryptedData,
-            message_iv: encryptedMessage.iv
-        });
+        const msg = name.messages.id(msg_id);
+        msg.message = encryptedMessage.encryptedData;
+        msg.message_iv = encryptedMessage.iv;
         await user.save();
-        res.status(200).json({ message: 'Message added successfully' });
+        res.status(200);
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server Error');

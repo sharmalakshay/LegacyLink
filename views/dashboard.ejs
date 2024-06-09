@@ -121,7 +121,7 @@
 
     <!-- List of Names and Messages -->
     <div id="message-list">
-        <table>
+        <table class="table borderless">
             <colgroup>
                 <col style="width: 20%">
                 <col style="width: 60%">
@@ -144,17 +144,19 @@
                         <tr class="msg">
                             <td><a href='#!' onclick="" class="name-in-list"><%= nameAndMsg.name %></td></a>
                             <td>
-                                <table class="table mb-0 table-sm table-hover">
+                                <table class="table table-borderless mb-0 table-sm table-hover">
                                     <% if (nameAndMsg.messages && Array.isArray(nameAndMsg.messages)) { %>
                                         <% nameAndMsg.messages.forEach((msg) => { %>
                                             <tr>
-                                                <td><%= msg %></td>
+                                                <td>
+                                                    <input type="text" class="form-control" onkeyup="debouncedEditMsg(this, '<%= nameAndMsg.id %>')" value="<%= msg.message %>" id="<%= msg.id %>">
+                                                </td>
                                             </tr>
                                         <% }); %>
                                     <% } %>
                                     <tr>
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-light">
+                                            <button class="btn btn-sm btn-light" onclick="add_msg(this, '<%= nameAndMsg.id %>')">
                                                 <i class="fa fa-plus"></i>
                                             </button>
                                         </td>
@@ -162,7 +164,7 @@
                                 </table>
                             </td>
                             <td>
-                                <button class="action-button delete-msg-button" onclick="deleteMessage(<%= index %>)">
+                                <button class="action-button delete-msg-button" onclick="deleteMessage('<%= index %>')">
                                     <i class="fa fa-trash"></i>
                                 </button>
                                 <button class="btn btn-sm btn-light" onclick="openModal()">
@@ -210,9 +212,43 @@
             })
             .then(response => {
                 if (response.status === 200) {
-                    alert('Name added successfully');
-                    // todo: change this alert to dynamically add the new name to the list
                     window.location.href = '/dashboard';
+
+                    // // Get the table element
+                    // var table = document.getElementById("names_table");
+
+                    // // Create a new row
+                    // var row = table.insertRow(-1);
+
+                    // // Add the name, message, and actions to the row
+                    // row.innerHTML = `
+                    //     <td>${name}</td>
+                    //     <td>
+                    //         <table class="table table-borderless mb-0 table-sm table-hover">
+                    //             <tr>
+                    //                 <td class="text-center">
+                    //                     <button class="btn btn-sm btn-light">
+                    //                         <i class="fa fa-plus"></i>
+                    //                     </button>
+                    //                 </td>
+                    //             </tr>
+                    //         </table>
+                    //     </td>
+                    //     <td>
+                    //         <button class="action-button delete-msg-button">
+                    //             <i class="fa fa-trash"></i>
+                    //         </button>
+                    //         <button class="btn btn-sm btn-light">
+                    //             <i class="fa fa-cog"></i>
+                    //         </button>
+                    //     </td>
+                    // `;
+
+                    // // Create a new cell
+                    // var cell = row.insertCell(0);
+
+                    // // Add the name to the cell
+                    // cell.textContent = name;
                 } else {
                     return response.json();
                 }
@@ -342,6 +378,62 @@
             })
             .catch(error => console.error('Error:', error));
         }
+
+        async function add_msg(ref, name_id){
+            var table = ref.closest('table');
+            var row = table.insertRow(table.rows.length - 1);
+            var cell = row.insertCell(0);
+            var temp_id = Math.floor(Math.random() * 1000);
+            cell.innerHTML = '<input type="text" class="form-control" onkeyup="debouncedEditMsg(this, \''+name_id+'\')" placeholder="Enter a new message" id="msg_' + temp_id + '">';
+            await fetch('/auth/add_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name_id })
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                if (data) {
+                    const new_msg_id = data.new_msg_id;
+                    if (new_msg_id) {
+                        document.getElementById('msg_' + temp_id).id = new_msg_id;
+                    }
+                }
+            }).catch(error => console.error('Error:', error));
+        }
+
+        function debounce(func, delay) {
+            let debounceTimer;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => func.apply(context, args), delay);
+            }
+        }
+
+        function editMsg(ref, name_id){
+            var msg_id = ref.id;
+            var message = ref.value;
+            fetch('/auth/edit_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name_id, msg_id, message })
+            }).then(response => {
+                if (response.status !== 200) {
+                    return response.json();
+                }
+            }).then(data => {
+                if (data) {
+                    alert(data.message);
+                }
+            }).catch(error => console.error('Error:', error));
+        }
+
+        const debouncedEditMsg = debounce(editMsg, 500);
 
     </script>
 

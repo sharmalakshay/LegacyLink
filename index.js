@@ -103,10 +103,18 @@ app.get('/dashboard', (req, res) => {
                 .then(user => {
                     if (user) {
                         // Decrypt names and messages
-                        const decryptedNamesAndMsgs = user.names.map(name => ({
-                            name: decrypt(name.name_iv, name.name),
-                            messages: name.messages.map(message => decrypt(message.message, message.message_iv))
-                        }));
+                        const decryptedNamesAndMsgs = user.names.map(
+                            name => ({
+                                id: name._id,
+                                name: decrypt(name.name_iv, name.name),
+                                messages: name.messages.map(
+                                    message => ({
+                                        id: message._id,
+                                        message: decrypt(message.message_iv, message.message)
+                                    })
+                                )
+                            })
+                        );
                         // Render the dashboard page with the user's data
                         res.render('dashboard', { user: user, nameAndMsgs: decryptedNamesAndMsgs });
                     } else {
@@ -114,11 +122,11 @@ app.get('/dashboard', (req, res) => {
                     }
                 })
                 .catch(err => {
-                    console.error(err);
+                    // console.error(err);
                     res.status(500).send(err);
                 });
         } catch (err) {
-            console.error(err);
+            // console.error(err);
             res.redirect('/login');
         }
     } else {

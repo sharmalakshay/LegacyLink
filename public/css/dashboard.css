@@ -34,7 +34,7 @@ button {
     margin-bottom: 10px;
 }
 
-#profile-form input[type="text"],
+/* #profile-form input[type="text"],
 #profile-form input[type="email"],
 #profile-form input[type="password"] {
     width: 100%;
@@ -43,7 +43,7 @@ button {
     box-sizing: border-box;
     border: 2px solid #ccc;
     border-radius: 4px;
-}
+} */
 
 #profile-form button {
     background-color: #4CAF50;
@@ -78,14 +78,14 @@ button {
     margin-top: 20px;
 } */
 
-#name-message-form input[type="text"] {
+/* #name-message-form input[type="text"] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     box-sizing: border-box;
     border: 2px solid #ccc;
     border-radius: 4px;
-}
+} */
 
 #name-message-form textarea {
     width: 100%;
@@ -194,17 +194,17 @@ button {
 }
 
 /* Styles for the table */
-#message-list table {
+/* #message-list table {
     width: 100%;
     border-collapse: collapse;
     background-color: #fff;
-}
+} */
 
-#message-list th, #message-list td {
+/* #message-list th, #message-list td {
     padding: 10px;
     border: 1px solid #ddd;
     text-align: left;
-}
+} */
 
 .add-to-msg-button {
     background-color: #28a745 !important;
@@ -293,12 +293,12 @@ a {
     color: #333;
 }
 
-.form-control{
+/* .form-control{
     width: 300px;
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 10px;
-}
+} */
 
 .save-button{
     background-color: #28a745;
