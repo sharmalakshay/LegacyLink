@@ -153,16 +153,29 @@ router.post('/retrieve_msgs', async (req, res) => {
 // Add name and message route
 router.post('/add_name', async (req, res) => {
     try {
-        const { username, name, message } = req.body;
+        const { username, name } = req.body;
         const user = await User.findOne({ username });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
         const encryptedName = encrypt(name);
-        const encryptedMessage = encrypt(message);
-        user.messages.push({
+        user.names.push({
             name: encryptedName.encryptedData,
-            name_iv: encryptedName.iv,
+            name_iv: encryptedName.iv
+        });
+        await user.save();
+        res.status(200).json({ message: 'Name added successfully' });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Add message route
+router.post('/add_message', async (req, res) => {
+    try {
+        const { username, name_id, message } = req.body;
+        const user = await User.findOne({ username });
+        const encryptedMessage = encrypt(message);
+        const name = user.names.id(name_id);
+        name.messages.push({
             message: encryptedMessage.encryptedData,
             message_iv: encryptedMessage.iv
         });

@@ -64,7 +64,7 @@ button {
     padding: 20px;
 }
 
-#message-list button {
+/* #message-list button {
     margin-left: 10px;
     background-color: #007BFF;
     color: white;
@@ -72,11 +72,11 @@ button {
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
-}
+} */
 
-#name-message-form {
+/* #name-message-form {
     margin-top: 20px;
-}
+} */
 
 #name-message-form input[type="text"] {
     width: 100%;

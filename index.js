@@ -102,20 +102,20 @@ app.get('/dashboard', (req, res) => {
             User.findOne({ _id: user_id })
                 .then(user => {
                     if (user) {
-                        // Decrypt messages
-                        const decryptedMessages = user.messages.map(msg => ({
-                            name: decrypt(msg.name_iv, msg.name),
-                            message: decrypt(msg.message_iv, msg.message)
+                        // Decrypt names and messages
+                        const decryptedNamesAndMsgs = user.names.map(name => ({
+                            name: decrypt(name.name_iv, name.name),
+                            messages: name.messages.map(message => decrypt(message.message, message.message_iv))
                         }));
                         // Render the dashboard page with the user's data
-                        res.render('dashboard', { user: { ...user.toObject(), messages: decryptedMessages } });
+                        res.render('dashboard', { user: user, nameAndMsgs: decryptedNamesAndMsgs });
                     } else {
-                        res.status(404).send('User Info Not found');
+                        res.redirect('/logout');
                     }
                 })
                 .catch(err => {
                     console.error(err);
-                    res.status(500).send('Server error');
+                    res.status(500).send(err);
                 });
         } catch (err) {
             console.error(err);

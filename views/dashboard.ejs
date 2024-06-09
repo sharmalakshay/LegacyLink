@@ -121,7 +121,6 @@
 
     <!-- List of Names and Messages -->
     <div id="message-list">
-        <!-- <h2>List of Names and Messages</h2> -->
         <table>
             <colgroup>
                 <col style="width: 20%">
@@ -136,22 +135,26 @@
                 </tr>
             </thead>
             <tbody>
-                <% if (user.messages.length === 0) { %>
+                <% if (user.names.length === 0) { %>
                     <tr>
-                        <td colspan="3">No messages stored</td>
+                        <td colspan="3">No Names stored</td>
                     </tr>
                 <% } else { %>
-                    <% user.messages.forEach((message, index) => { %>
+                    <% nameAndMsgs.forEach((nameAndMsg, index) => { %>
                         <tr class="msg">
-                            <td><a href='#!' onclick="" class="name-in-list"><%= message.name %></td></a>
+                            <td><a href='#!' onclick="" class="name-in-list"><%= nameAndMsg.name %></td></a>
                             <td>
-                                <table>
-                                    <tr>
-                                        <td><%= message.message %></td>
-                                    </tr>
+                                <table class="table mb-0 table-sm table-hover">
+                                    <% if (nameAndMsg.messages && Array.isArray(nameAndMsg.messages)) { %>
+                                        <% nameAndMsg.messages.forEach((msg) => { %>
+                                            <tr>
+                                                <td><%= msg %></td>
+                                            </tr>
+                                        <% }); %>
+                                    <% } %>
                                     <tr>
                                         <td class="text-center">
-                                            <button class="btn btn-xs">
+                                            <button class="btn btn-sm btn-light">
                                                 <i class="fa fa-plus"></i>
                                             </button>
                                         </td>
@@ -162,20 +165,28 @@
                                 <button class="action-button delete-msg-button" onclick="deleteMessage(<%= index %>)">
                                     <i class="fa fa-trash"></i>
                                 </button>
-                                <button class="action-button settings-msg-button" onclick="openModal()">
+                                <button class="btn btn-sm btn-light" onclick="openModal()">
                                     <i class="fa fa-cog"></i>
                                 </button>
                             </td>
                         </tr>
                     <% }); %>
                 <% } %>
+                <tr>
+                    <td colspan="3" class="text-center">
+                        <button onclick="this.remove(); document.getElementById('new-name-form').style.display='block';" class="btn btn-sm btn-light" onclick="openModal()">
+                            <i class="fa fa-plus"></i> Add Name
+                        </button>
+                        <form id="new-name-form" style="display:none" onsubmit="addName(event)">                            
+                            <div class="input-group mt-1 mb-1">
+                                <input class="form-control" type="text" id="new-name" placeholder="Enter a new name" required>
+                                <button class="btn btn-sm btn-success" type="submit">Add Name</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
             </tbody>
         </table>
-        <form id="name-message-form" onsubmit="addName(event)">
-            <input type="text" id="new-name" placeholder="Enter a new name" required>
-            <textarea id="new-message" placeholder="Enter a new message" required></textarea>
-            <button type="submit">Add Name and Message</button>
-        </form>
     </div>
 
     <script>
@@ -188,7 +199,6 @@
         function addName(e) {
             e.preventDefault();
             var name = document.getElementById('new-name').value;
-            var message = document.getElementById('new-message').value;
             var token = localStorage.getItem('token');
             fetch('/auth/add_name', {
                 method: 'POST',
@@ -196,17 +206,18 @@
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ username: "<%= user.username %>", name, message })
+                body: JSON.stringify({ username: "<%= user.username %>", name })
             })
             .then(response => {
                 if (response.status === 200) {
-                    alert('Message added successfully');
+                    alert('Name added successfully');
+                    // todo: change this alert to dynamically add the new name to the list
                     window.location.href = '/dashboard';
                 } else {
                     return response.json();
                 }
             })
-            .then(data => {
+            .then(data => { //this runs if the response is not 200
                 if (data) {
                     alert(data.message);
                 }
