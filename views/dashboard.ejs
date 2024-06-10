@@ -156,7 +156,7 @@
                                         <% nameAndMsg.messages.forEach((msg) => { %>
                                             <tr>
                                                 <td>
-                                                    <input type="text" class="form-control" onkeyup="debouncedEditMsg(this, '<%= nameAndMsg.id %>')" value="<%= msg.message %>" id="<%= msg.id %>">
+                                                    <textarea type="text" class="form-control" onkeyup="debouncedEditMsg(this, '<%= nameAndMsg.id %>')" id="<%= msg.id %>"><%= msg.message %></textarea>
                                                 </td>
                                             </tr>
                                         <% }); %>
@@ -381,7 +381,7 @@
             var row = table.insertRow(1); // Insert the new row as the first row
             var cell = row.insertCell(0);
             var temp_id = Math.floor(Math.random() * 1000);
-            cell.innerHTML = '<input type="text" class="form-control" onkeyup="debouncedEditMsg(this, \''+name_id+'\')" placeholder="Enter a new message" id="msg_' + temp_id + '">';
+            cell.innerHTML = '<textarea type="text" class="form-control" onkeyup="debouncedEditMsg(this, \'' + name_id + '\')" id="msg_' + temp_id + '" placeholder="Enter a new message"></textarea>';
             await fetch('/auth/add_message', {
                 method: 'POST',
                 headers: {
