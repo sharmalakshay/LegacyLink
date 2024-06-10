@@ -103,18 +103,17 @@ app.get('/dashboard', (req, res) => {
                 .then(user => {
                     if (user) {
                         // Decrypt names and messages
-                        const decryptedNamesAndMsgs = user.names.map(
-                            name => ({
-                                id: name._id,
-                                name: decrypt(name.name_iv, name.name),
-                                messages: name.messages.map(
-                                    message => ({
-                                        id: message._id,
-                                        message: decrypt(message.message_iv, message.message)
-                                    })
-                                )
-                            })
-                        );
+                        const decryptedNamesAndMsgs = user.names
+                        .map(name => ({
+                            id: name._id,
+                            name: decrypt(name.name_iv, name.name),
+                            messages: name.messages
+                                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sort messages in descending order of createdAt
+                                .map(message => ({
+                                    id: message._id,
+                                    message: decrypt(message.message_iv, message.message)
+                                }))
+                        }));
                         // Render the dashboard page with the user's data
                         res.render('dashboard', { user: user, nameAndMsgs: decryptedNamesAndMsgs });
                     } else {

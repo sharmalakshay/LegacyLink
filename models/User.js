@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const messageSchema = new mongoose.Schema({
     message: { type: String, required: false },
     message_iv: { type: String, required: false },
+    created_at: { type: Date, default: Date.now },
 }, { _id: true });
 
 const namesSchema = new mongoose.Schema({
     name: { type: String, required: true },
     name_iv: { type: String, required: true },
+    created_at: { type: Date, default: Date.now },
     messages: [messageSchema],
 }, { _id: true });
 

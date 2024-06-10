@@ -145,6 +145,13 @@
                             <td><a href='#!' onclick="" class="name-in-list"><%= nameAndMsg.name %></td></a>
                             <td>
                                 <table class="table table-borderless mb-0 table-sm table-hover">
+                                    <tr>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-light" onclick="add_msg(this, '<%= nameAndMsg.id %>')">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
                                     <% if (nameAndMsg.messages && Array.isArray(nameAndMsg.messages)) { %>
                                         <% nameAndMsg.messages.forEach((msg) => { %>
                                             <tr>
@@ -154,13 +161,6 @@
                                             </tr>
                                         <% }); %>
                                     <% } %>
-                                    <tr>
-                                        <td class="text-center">
-                                            <button class="btn btn-sm btn-light" onclick="add_msg(this, '<%= nameAndMsg.id %>')">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
                                 </table>
                             </td>
                             <td>
@@ -378,7 +378,7 @@
 
         async function add_msg(ref, name_id){
             var table = ref.closest('table');
-            var row = table.insertRow(table.rows.length - 1);
+            var row = table.insertRow(1); // Insert the new row as the first row
             var cell = row.insertCell(0);
             var temp_id = Math.floor(Math.random() * 1000);
             cell.innerHTML = '<input type="text" class="form-control" onkeyup="debouncedEditMsg(this, \''+name_id+'\')" placeholder="Enter a new message" id="msg_' + temp_id + '">';
