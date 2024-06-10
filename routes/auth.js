@@ -199,7 +199,7 @@ router.post('/edit_message', async (req, res) => {
         msg.message = encryptedMessage.encryptedData;
         msg.message_iv = encryptedMessage.iv;
         await user.save();
-        res.status(200);
+        res.status(200).end();
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server Error');
@@ -209,11 +209,14 @@ router.post('/edit_message', async (req, res) => {
 // Delete message route
 router.post('/delete_name', async (req, res) => {
     try {
-        const { username, index } = req.body;
-        const user = await User.findOne({ username });
-        user.messages.splice(index, 1);
+        const { name_id } = req.body;
+        const token = req.cookies.token;
+        const user_id = jwt.decode(token).id;
+        const user = await User.findOne({ _id: user_id });
+        const name = user.names.id(name_id);
+        user.names.pull({ _id: name_id });
         await user.save();
-        res.status(200).json({ message: 'Message deleted successfully' });
+        res.status(200).end();
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server Error');

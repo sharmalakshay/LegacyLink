@@ -141,7 +141,7 @@
                     </tr>
                 <% } else { %>
                     <% nameAndMsgs.forEach((nameAndMsg, index) => { %>
-                        <tr class="msg">
+                        <tr class="name_row">
                             <td><a href='#!' onclick="" class="name-in-list"><%= nameAndMsg.name %></td></a>
                             <td>
                                 <table class="table table-borderless mb-0 table-sm table-hover">
@@ -164,7 +164,7 @@
                                 </table>
                             </td>
                             <td>
-                                <button class="action-button delete-msg-button" onclick="deleteMessage('<%= index %>')">
+                                <button class="action-button delete-msg-button" onclick="deleteName(this, '<%= nameAndMsg.id %>')">
                                     <i class="fa fa-trash"></i>
                                 </button>
                                 <button class="btn btn-sm btn-light" onclick="openModal()">
@@ -279,23 +279,20 @@
             }, {once: true}); // The listener is removed after executing once
         }
 
-        function deleteMessage(index) {
-            if (!confirm('Are you sure you want to delete this message?')) {
+        function deleteName(ref, name_id) {
+            if (!confirm('Are you sure you want to delete this name and all the messages it contains?')) {
                 return;
             }
-            var token = localStorage.getItem('token');
             fetch('/auth/delete_name', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username: "<%= user.username %>", index })
+                body: JSON.stringify({ name_id })
             })
             .then(response => {
                 if (response.status === 200) {
-                    alert('Message deleted successfully');
-                    window.location.href = '/dashboard';
+                    ref.parentElement.parentElement.remove();
                 } else {
                     return response.json();
                 }
