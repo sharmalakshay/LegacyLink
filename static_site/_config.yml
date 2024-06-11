@@ -1,5 +1,5 @@
 title: LegacyLink
-baseurl: "/legacylink.md" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of the site, e.g. /blog
 
 # Build settings
 theme: minima
