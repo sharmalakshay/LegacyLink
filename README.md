@@ -52,6 +52,10 @@ To deploy the app locally, follow these steps:
 4. Run `npm install` to install the necessary dependencies.
 5. Run `node index.js` to start the application.
 
+## Documentation
+
+For more detailed information about how to use LegacyLink, check out our [Wiki](https://github.com/sharmalakshay/LegacyLink/wiki).
+
 ## Contributing
 
 Contributions are welcome! If you have any suggestions, ideas, or want to report a bug, please [open an issue](https://github.com/sharmalakshay/LegacyLink/issues) or [submit a pull request](https://github.com/sharmalakshay/LegacyLink/pulls).
