@@ -1,7 +1,0 @@
-title: LegacyLink
-baseurl: "" # the subpath of the site, e.g. /blog
-
-# Build settings
-theme: minima
-plugins:
-  - jekyll-feed
