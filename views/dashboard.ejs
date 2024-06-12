@@ -400,7 +400,7 @@
             var row = table.insertRow(1); // Insert the new row as the first row
             var cell = row.insertCell(0);
             var temp_id = Math.floor(Math.random() * 1000);
-            cell.innerHTML = '<textarea type="text" class="form-control" onkeyup="debouncedEditMsg(this, \'' + name_id + '\')" id="msg_' + temp_id + '" placeholder="Enter a new message"></textarea>';
+            cell.innerHTML = '<textarea type="text" oncontextmenu="msg_right_click(this)" class="form-control" onkeyup="debouncedEditMsg(this, \'' + name_id + '\')" id="msg_' + temp_id + '" placeholder="Enter a new message"></textarea>';
             await fetch('/auth/add_message', {
                 method: 'POST',
                 headers: {
