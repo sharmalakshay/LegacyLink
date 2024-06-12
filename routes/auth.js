@@ -223,6 +223,24 @@ router.post('/delete_name', async (req, res) => {
     }
 });
 
+// Delete message route
+router.post('/delete_message', async (req, res) => {
+    try {
+        const { name_id, msg_id } = req.body;
+        const token = req.cookies.token;
+        const user_id = jwt.decode(token).id;
+        const user = await User.findOne({ _id: user_id });
+        const name = user.names.id(name_id);
+        const msg = name.messages.id(msg_id);
+        name.messages.pull({ _id: msg_id });
+        await user.save();
+        res.status(200).end();
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 // Change password route
 router.post('/change_password', async (req, res) => {
     try {

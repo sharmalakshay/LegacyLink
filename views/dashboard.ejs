@@ -6,8 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LegacyLink</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/bootstrap.min.js" defer></script>
     <link rel="stylesheet" href="/css/dashboard.css">
     <script src="/js/dashboard.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 
 <body>
@@ -141,7 +145,7 @@
                     </tr>
                 <% } else { %>
                     <% nameAndMsgs.forEach((nameAndMsg, index) => { %>
-                        <tr class="name_row">
+                        <tr class="name_row" id="<%= nameAndMsg.id %>">
                             <td><a href='#!' onclick="" class="name-in-list"><%= nameAndMsg.name %></td></a>
                             <td>
                                 <table class="table table-borderless mb-0 table-sm table-hover">
@@ -156,7 +160,7 @@
                                         <% nameAndMsg.messages.forEach((msg) => { %>
                                             <tr>
                                                 <td>
-                                                    <textarea type="text" class="form-control" onkeyup="debouncedEditMsg(this, '<%= nameAndMsg.id %>')" id="<%= msg.id %>"><%= msg.message %></textarea>
+                                                    <textarea readonly oncontextmenu="msg_right_click(this)" placeholder="Enter a new message" type="text" class="form-control" onkeyup="debouncedEditMsg(this, '<%= nameAndMsg.id %>')" id="<%= msg.id %>"><%= msg.message %></textarea>
                                                 </td>
                                             </tr>
                                         <% }); %>
@@ -189,6 +193,21 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div id="floating_context_menu">
+        <ul>
+            <li>
+                <button class="btn btn-sm btn-light context-menu-item" onclick="make_editable()">
+                    <i class="fa fa-edit"></i> Edit
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-sm btn-light context-menu-item" onclick="delete_msg()">
+                    <i class="fa fa-trash"></i> Delete
+                </button>
+            </li>
+        </ul>
     </div>
 
     <script>
@@ -420,12 +439,72 @@
                 },
                 body: JSON.stringify({ name_id, msg_id, message })
             }).then(response => {
-                if (response.status !== 200) {
+                if (response.status == 200) {
+                    toastr.success('Message saved');
+                }
+                else {
                     return response.json();
                 }
             }).then(data => {
                 if (data) {
-                    alert(data.message);
+                    toastr.error(data.message);
+                }
+            }).catch(error => console.error('Error:', error));
+        }
+
+        function msg_right_click(ref){
+            var context_menu = document.getElementById('floating_context_menu');
+            context_menu.style.display = 'block';
+            context_menu.style.left = event.pageX + 'px';
+            context_menu.style.top = event.pageY + 'px';
+            context_menu.msg_id = ref.id;
+            event.preventDefault();
+
+            // Add an event listener to the window
+            window.addEventListener('click', function(event) {
+                // If the clicked element is not the context menu or a descendant of it
+                if (!context_menu.contains(event.target)) {
+                    // Hide the context menu
+                    context_menu.style.display = 'none';
+                }
+            });
+        }
+
+        function make_editable(){
+            var context_menu = document.getElementById('floating_context_menu');
+            var msg_id = context_menu.msg_id;
+            var msg = document.getElementById(msg_id);
+            msg.readOnly = false;
+            msg.focus();
+            context_menu.style.display = 'none';
+        }
+
+        function delete_msg(){
+            if (!confirm('Are you sure you want to delete this message?')) {
+                return;
+            }
+            var context_menu = document.getElementById('floating_context_menu');
+            var msg_id = context_menu.msg_id;
+            context_menu.style.display = 'none';
+            var msg = document.getElementById(msg_id);
+            var name_id = msg.closest('.name_row').id;
+            fetch('/auth/delete_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name_id, msg_id })
+            }).then(response => {
+                if (response.status == 200) {
+                    msg.closest('tr').remove();
+                    toastr.success('Message deleted');
+                }
+                else {
+                    return response.json();
+                }
+            }).then(data => {
+                if (data) {
+                    toastr.error(data.message);
                 }
             }).catch(error => console.error('Error:', error));
         }
