@@ -139,11 +139,19 @@ router.post('/retrieve_msgs', async (req, res) => {
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
-        const decryptedMessages = user.messages.map(msg => ({
-            name: decrypt(msg.name_iv, msg.name),
-            message: decrypt(msg.message_iv, msg.message)
+
+        const decryptedNamesAndMsgs = user.names
+        .map(name => ({
+            id: name._id,
+            name: decrypt(name.name_iv, name.name),
+            messages: name.messages
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sort messages in descending order of createdAt
+                .map(message => ({
+                    id: message._id,
+                    message: decrypt(message.message_iv, message.message)
+                }))
         }));
-        return res.status(200).json({ msgs: decryptedMessages });
+        return res.status(200).json({ nameAndMsgs: decryptedNamesAndMsgs });
     } catch (error) {
         // console.error(error.message);
         res.status(500).json({ message: 'Server Error' });
