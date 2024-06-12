@@ -146,14 +146,12 @@
                 <% } else { %>
                     <% nameAndMsgs.forEach((nameAndMsg, index) => { %>
                         <tr class="name_row" id="<%= nameAndMsg.id %>">
-                            <td><a href='#!' onclick="" class="name-in-list"><%= nameAndMsg.name %></td></a>
+                            <td><a href='#!' onclick="" class="name-in-list"><h5><%= nameAndMsg.name %></h5></a></td>
                             <td>
                                 <table class="table table-borderless mb-0 table-sm table-hover">
                                     <tr>
-                                        <td class="text-center">
-                                            <button class="btn btn-sm btn-light" onclick="add_msg(this, '<%= nameAndMsg.id %>')">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
+                                        <td class="text-center" style="cursor: pointer;" onclick="add_msg(this, '<%= nameAndMsg.id %>')">
+                                            <i class="fa fa-plus"></i>
                                         </td>
                                     </tr>
                                     <% if (nameAndMsg.messages && Array.isArray(nameAndMsg.messages)) { %>
@@ -179,9 +177,9 @@
                     <% }); %>
                 <% } %>
                 <tr>
-                    <td colspan="3" class="text-center">
-                        <button onclick="this.remove(); document.getElementById('new-name-form').style.display='block';" class="btn btn-sm btn-light" onclick="openModal()">
-                            <i class="fa fa-plus"></i> Add Name
+                    <td colspan="3" class="text-center" style="transform: rotate(0);">
+                        <button onclick="this.remove(); document.getElementById('new-name-form').style.display='block';" class="btn btn-sm btn-light px-5 stretched-link" onclick="openModal()">
+                            Add New Name
                         </button>
                         <form id="new-name-form" style="display:none" onsubmit="addName(event)">                            
                             <div class="input-group mt-1 mb-1">
