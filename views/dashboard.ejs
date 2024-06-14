@@ -132,7 +132,7 @@
                 <col style="width: 20%">
             </colgroup>
             <thead>
-                <tr>
+                <tr class="text-center">
                     <th>Name</th>
                     <th>Messages</th>
                     <th>Actions</th>
@@ -140,12 +140,12 @@
             </thead>
             <tbody>
                 <% if (user.names.length === 0) { %>
-                    <tr>
+                    <tr class="text-center" id="no_names_rows">
                         <td colspan="3">No Names stored</td>
                     </tr>
                 <% } else { %>
                     <% nameAndMsgs.forEach((nameAndMsg, index) => { %>
-                        <tr class="name_row" id="<%= nameAndMsg.id %>">
+                        <tr class="name_row text-center" id="<%= nameAndMsg.id %>">
                             <td><a href='#!' onclick="" class="name-in-list"><h5><%= nameAndMsg.name %></h5></a></td>
                             <td>
                                 <table class="table table-borderless mb-0 table-sm table-hover">
@@ -158,7 +158,7 @@
                                         <% nameAndMsg.messages.forEach((msg) => { %>
                                             <tr>
                                                 <td>
-                                                    <textarea readonly ondblclick="this.readOnly=false" onfocusout="this.readOnly=true" oncontextmenu="msg_right_click(this)" placeholder="Enter a new message" type="text" class="form-control" onkeyup="debouncedEditMsg(this, '<%= nameAndMsg.id %>')" id="<%= msg.id %>"><%= msg.message %></textarea>
+                                                    <textarea readonly ondblclick="this.readOnly=false" onfocusout="this.readOnly=true" oncontextmenu="msg_right_click(this)" placeholder="Enter a new message" class="form-control" onkeyup="debouncedEditMsg(this, '<%= nameAndMsg.id %>')" id="<%= msg.id %>"><%= msg.message %></textarea>
                                                 </td>
                                             </tr>
                                         <% }); %>
@@ -178,7 +178,7 @@
                 <% } %>
                 <tr>
                     <td colspan="3" class="text-center" style="transform: rotate(0);">
-                        <button onclick="newNameClicked()" class="btn btn-sm btn-light px-5 stretched-link" id="new-name-button">
+                        <button onclick="newNameClicked()" class="btn btn-sm btn-dark px-5" id="new-name-button">
                             Add New Name
                         </button>
                         <form id="new-name-form" style="display:none" onsubmit="addName(event);">                            
@@ -239,7 +239,7 @@
                         const new_name_id = data.new_name_id;
                         var table = document.getElementById('message-list').getElementsByTagName('tbody')[0];
                         var row = table.insertRow(table.rows.length - 1); // Insert the new row before the last row
-                        row.className = 'name_row';
+                        row.className = 'name_row text-center';
                         row.id = new_name_id;
                         var cell1 = row.insertCell(0);
                         var cell2 = row.insertCell(1);
@@ -249,6 +249,9 @@
                         cell3.innerHTML = '<button class="action-button delete-msg-button" onclick="deleteName(this, \'' + new_name_id + '\')"><i class="fa fa-trash"></i></button>';
                         document.getElementById('new-name-form').style.display = 'none';
                         document.getElementById('new-name').value = '';
+                        if (document.getElementById('no_names_rows')) {
+                            document.getElementById('no_names_rows').remove();
+                        }
                         $('#new-name-button').show();
                         toastr.success('Name added');
                     });
@@ -385,7 +388,7 @@
             var row = table.insertRow(1); // Insert the new row as the first row
             var cell = row.insertCell(0);
             var temp_id = Math.floor(Math.random() * 1000);
-            cell.innerHTML = '<textarea ondblclick="this.readOnly=false" onfocusout="this.readOnly=true" type="text" oncontextmenu="msg_right_click(this)" class="form-control" onkeyup="debouncedEditMsg(this, \'' + name_id + '\')" id="msg_' + temp_id + '" placeholder="Enter a new message"></textarea>';
+            cell.innerHTML = '<textarea ondblclick="this.readOnly=false" onfocusout="this.readOnly=true" oncontextmenu="msg_right_click(this)" class="form-control" onkeyup="debouncedEditMsg(this, \'' + name_id + '\')" id="msg_' + temp_id + '" placeholder="Enter a new message"></textarea>';
             document.getElementById('msg_' + temp_id).focus();
             await fetch('/auth/add_message', {
                 method: 'POST',
