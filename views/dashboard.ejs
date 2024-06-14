@@ -158,7 +158,11 @@
                                         <% nameAndMsg.messages.forEach((msg) => { %>
                                             <tr>
                                                 <td>
-                                                    <textarea readonly ondblclick="this.readOnly=false" onfocusout="this.readOnly=true" oncontextmenu="msg_right_click(this)" placeholder="Enter a new message" class="form-control" onkeyup="debouncedEditMsg(this, '<%= nameAndMsg.id %>')" id="<%= msg.id %>"><%= msg.message %></textarea>
+                                                    <% let numberOfNewLines = msg.message.split('\n').length - 1; %>
+                                                    <textarea readonly ondblclick="msg_right_click(this)" onfocusout="this.readOnly=true" oncontextmenu="msg_right_click(this)" 
+                                                    class="form-control" onkeyup="debouncedEditMsg(this, '<%= nameAndMsg.id %>')" 
+                                                    placeholder="Empty Message" rows="<%= numberOfNewLines + 1 %>"
+                                                    id="<%= msg.id %>"><%= msg.message %></textarea>
                                                 </td>
                                             </tr>
                                         <% }); %>
