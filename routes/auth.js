@@ -169,7 +169,7 @@ router.post('/add_name', async (req, res) => {
             name_iv: encryptedName.iv
         });
         await user.save();
-        res.status(200).json({ message: 'Name added successfully' });
+        res.status(200).json({ message: 'Name added successfully', new_name_id: user.names[user.names.length - 1]._id });
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server Error');
