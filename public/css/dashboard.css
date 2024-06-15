@@ -60,7 +60,6 @@ button {
 }
 
 #message-list {
-    margin-top: 20px;
     padding: 20px;
 }
 
@@ -312,6 +311,18 @@ a {
     cursor: pointer;
 }
 
+.delete-button{
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
 .name-in-list{
     color: #007BFF;
 }
@@ -344,4 +355,12 @@ a {
 }
 #floating_context_menu ul li button:hover {
     color: #007BFF;
+}
+
+.msg-textarea[readonly] {
+    border: none;
+    overflow: auto;
+    outline: none;
+    box-shadow: none;
+    resize: none;
 }
