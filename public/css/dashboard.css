@@ -364,3 +364,11 @@ a {
     box-shadow: none;
     resize: none;
 }
+
+.name_row {
+    border-bottom: 1px solid #efeeee !important;
+}
+
+.name_row td {
+    border-right: 1px solid #efeeee !important;
+}

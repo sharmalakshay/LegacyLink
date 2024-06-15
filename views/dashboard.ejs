@@ -125,7 +125,7 @@
 
     <!-- List of Names and Messages -->
     <div id="message-list">
-        <table class="table table-borderless">
+        <table class="table table-borderless" id="names-table">
             <colgroup>
                 <col style="width: 20%">
                 <col style="width: 80%">
@@ -148,7 +148,7 @@
                                 <i class="fa fa-user px-3 text-muted"></i>
                                 <a href='#!' onclick="open_name_modal(this, '<%= nameAndMsg.id %>', '<%= nameAndMsg.visibility %>')" class="name-in-list"><%= nameAndMsg.name %></a>
                             </td>
-                            <td class="bg-light">
+                            <td>
                                 <table class="table table-borderless mb-0 table-sm table-hover">
                                     <tr>
                                         <td colspan="2" class="text-center text-muted" style="cursor: pointer;" onclick="add_msg(this, '<%= nameAndMsg.id %>')">
@@ -158,7 +158,7 @@
                                     <% if (nameAndMsg.messages && Array.isArray(nameAndMsg.messages)) { %>
                                         <% nameAndMsg.messages.forEach((msg) => { %>
                                             <tr>
-                                                <td>
+                                                <td class="bg-light">
                                                     <% let numberOfNewLines = msg.message.split('\n').length - 1; %>
                                                     <% let numberOfChars = msg.message.length; %>
                                                     <% let rows = Math.max(numberOfNewLines + 1, Math.ceil(numberOfChars / 50)); %>
@@ -167,7 +167,7 @@
                                                     placeholder="Empty Message" rows="<%= rows %>"
                                                     id="<%= msg.id %>"><%= msg.message %></textarea>
                                                 </td>
-                                                <td class="text-center">
+                                                <td class="text-center align-middle">
                                                     <button class="btn btn-sm btn-light" onclick="make_editable('<%= msg.id %>')">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
