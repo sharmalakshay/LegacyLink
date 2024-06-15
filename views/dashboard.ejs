@@ -146,7 +146,7 @@
                         <tr class="name_row" id="<%= nameAndMsg.id %>">
                             <td class="align-middle">
                                 <i class="fa fa-user px-3 text-muted"></i>
-                                <a href='#!' onclick="open_name_modal(this, '<%= nameAndMsg.id %>')" class="name-in-list"><%= nameAndMsg.name %></a>
+                                <a href='#!' onclick="open_name_modal(this, '<%= nameAndMsg.id %>', '<%= nameAndMsg.visibility %>')" class="name-in-list"><%= nameAndMsg.name %></a>
                             </td>
                             <td class="bg-light">
                                 <table class="table table-borderless mb-0 table-sm table-hover">
@@ -160,9 +160,11 @@
                                             <tr>
                                                 <td>
                                                     <% let numberOfNewLines = msg.message.split('\n').length - 1; %>
+                                                    <% let numberOfChars = msg.message.length; %>
+                                                    <% let rows = Math.max(numberOfNewLines + 1, Math.ceil(numberOfChars / 50)); %>
                                                     <textarea readonly ondblclick="msg_right_click(this)" onfocusout="this.readOnly=true" oncontextmenu="msg_right_click(this)" 
                                                     class="form-control msg-textarea" onkeyup="debouncedEditMsg(this, '<%= nameAndMsg.id %>')" 
-                                                    placeholder="Empty Message" rows="<%= numberOfNewLines + 1 %>"
+                                                    placeholder="Empty Message" rows="<%= rows %>"
                                                     id="<%= msg.id %>"><%= msg.message %></textarea>
                                                 </td>
                                                 <td class="text-center">
@@ -222,7 +224,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="name-details-form">
+                    <form id="name-details-form" onsubmit="saveName(event)">
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input class="form-control" type="text" id="name">
@@ -237,9 +239,9 @@
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input class="form-control" type="password" id="password">
+                            <input disabled required class="form-control" type="password" id="password">
                         </div>
-                        <button type="button" id="name-save-btn" class="btn save-button">Save</button>
+                        <button type="submit" id="name-save-btn" class="btn save-button">Save</button>
                         <button type="button" id="name-delete-btn" class="btn delete-button">Delete</button>
                     </form>
                 </div>
@@ -248,15 +250,17 @@
     </div>
 
     <script>
-        function open_name_modal(ref, name_id){
+        function open_name_modal(ref, name_id, visibility){
             var name = ref.innerText;
             var modal = document.getElementById('name-modal');
             modal.querySelector('#name').value = name;
-            modal.querySelector('#visibility').value = 'public';
-            modal.querySelector('#password').value = '';
-            modal.querySelector('#name-save-btn').onclick = function(){
-                alert('Save button clicked');
-            };
+            modal.querySelector('#visibility').value = visibility;
+            if (visibility === 'public') {
+                modal.querySelector('#password').disabled = true;
+            } else {
+                modal.querySelector('#password').disabled = false;
+                modal.querySelector('#password').value = '********';
+            }
             modal.querySelector('#name-delete-btn').onclick = function(){
                 deleteName(ref, name_id);
                 modal.hide();
