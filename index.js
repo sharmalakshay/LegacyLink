@@ -107,6 +107,7 @@ app.get('/dashboard', (req, res) => {
                         .map(name => ({
                             id: name._id,
                             name: decrypt(name.name_iv, name.name),
+                            visibility: name.visibility,
                             messages: name.messages
                                 .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sort messages in descending order of createdAt
                                 .map(message => ({

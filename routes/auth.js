@@ -206,6 +206,7 @@ router.post('/edit_message', async (req, res) => {
         const msg = name.messages.id(msg_id);
         msg.message = encryptedMessage.encryptedData;
         msg.message_iv = encryptedMessage.iv;
+        msg.updated_at = Date.now();
         await user.save();
         res.status(200).end();
     } catch (error) {
@@ -241,6 +242,32 @@ router.post('/delete_message', async (req, res) => {
         const name = user.names.id(name_id);
         const msg = name.messages.id(msg_id);
         name.messages.pull({ _id: msg_id });
+        await user.save();
+        res.status(200).end();
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Edit name route
+router.post('/edit_name', async (req, res) => {
+    try {
+        const { name_id, name, visibility, password } = req.body;
+        const token = req.cookies.token;
+        const user_id = jwt.decode(token).id;
+        const user = await User.findOne({ _id: user_id });
+        const encryptedName = encrypt(name);
+        const nameObj = user.names.id(name_id);
+        nameObj.name = encryptedName.encryptedData;
+        nameObj.name_iv = encryptedName.iv;
+        nameObj.visibility = visibility;
+        if (password) {
+            const encryptedPassword = encrypt(password);
+            nameObj.password = encryptedPassword.encryptedData;
+            nameObj.password_iv = encryptedPassword.iv;
+        }
+        nameObj.updated_at = Date.now();
         await user.save();
         res.status(200).end();
     } catch (error) {

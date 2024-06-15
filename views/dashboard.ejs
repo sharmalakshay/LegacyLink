@@ -226,21 +226,22 @@
                 <div class="modal-body">
                     <form id="name-details-form" onsubmit="saveName(event)">
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input class="form-control" type="text" id="name">
+                            <label for="name_edit">Name</label>
+                            <input class="form-control" type="text" id="name_edit">
                         </div>
                         <div class="form-group">
                             <label for="visibility">Visibility</label>
-                            <select class="form-select" id="visibility">
+                            <select class="form-select" id="name_visibility" onchange="visibilityChanged(this)">
                                 <option value="public">Public</option>
                                 <option value="protected">Protected</option>
                                 <option value="private">Private</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <input disabled required class="form-control" type="password" id="password">
+                            <label for="name_password">Password</label>
+                            <input disabled required class="form-control" type="password" id="name_password">
                         </div>
+                        <input type="hidden" id="edit_name_id">
                         <button type="submit" id="name-save-btn" class="btn save-button">Save</button>
                         <button type="button" id="name-delete-btn" class="btn delete-button">Delete</button>
                     </form>
@@ -250,16 +251,60 @@
     </div>
 
     <script>
+        function saveName(e) {
+            e.preventDefault();
+            var name = document.getElementById('name_edit').value;
+            var visibility = document.getElementById('name_visibility').value;
+            var password = document.getElementById('name_password').value;
+            var name_id = document.getElementById('edit_name_id').value;
+            fetch('/auth/edit_name', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name_id, name, visibility, password })
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    toastr.success('Name saved');
+                    document.getElementById(name_id).querySelector('.name-in-list').innerText = name;
+                    document.getElementById(name_id).querySelector('.name-in-list').setAttribute('onclick', 'open_name_modal(this, \'' + name_id + '\', \'' + visibility + '\')');
+                    $('#name-modal').modal('hide');
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function visibilityChanged(ref) {
+            var password = document.getElementById('name_password');
+            if (ref.value === 'public') {
+                password.disabled = true;
+            } else {
+                password.disabled = false;
+                password.value = '';
+                password.focus();
+            }
+        }
+
         function open_name_modal(ref, name_id, visibility){
             var name = ref.innerText;
             var modal = document.getElementById('name-modal');
-            modal.querySelector('#name').value = name;
-            modal.querySelector('#visibility').value = visibility;
+            modal.querySelector('#edit_name_id').value = name_id;
+            modal.querySelector('#name_edit').value = name;
+            modal.querySelector('#name_visibility').value = visibility;
             if (visibility === 'public') {
-                modal.querySelector('#password').disabled = true;
+                modal.querySelector('#name_password').disabled = true;
+                modal.querySelector('#name_password').value = '';
             } else {
-                modal.querySelector('#password').disabled = false;
-                modal.querySelector('#password').value = '********';
+                modal.querySelector('#name_password').disabled = false;
+                modal.querySelector('#name_password').value = '********';
             }
             modal.querySelector('#name-delete-btn').onclick = function(){
                 deleteName(ref, name_id);
@@ -305,7 +350,7 @@
                         var cell2 = row.insertCell(1);
                         cell1.className = 'align-middle';
                         cell2.className = 'bg-light';
-                        cell1.innerHTML = '<i class="fa fa-user px-3 text-muted"></i><a href="#!" onclick="open_name_modal(this, \'' + new_name_id + '\')" class="name-in-list">' + name + '</a>';
+                        cell1.innerHTML = '<i class="fa fa-user px-3 text-muted"></i><a href="#!" onclick="open_name_modal(this, \'' + new_name_id + '\' , \'public\')" class="name-in-list">' + name + '</a>';
                         cell2.innerHTML = '<table class="table table-borderless mb-0 table-sm table-hover"><tr><td class="text-center text-muted" style="cursor: pointer;" onclick="add_msg(this, \'' + new_name_id + '\')"><i class="fa fa-plus"></i></td></tr></table>';
                         document.getElementById('new-name-form').style.display = 'none';
                         document.getElementById('new-name').value = '';
