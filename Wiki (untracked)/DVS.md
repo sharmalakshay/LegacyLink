@@ -18,9 +18,10 @@
 ### Method of Demise Verification (DV)
 - **Description:** The approach used to verify the user's demise.
 - **Options:**
-    - Contact nominee from LegacyLink
-    - Contact nominee anonymously (e.g., calling from [XYZ company], asking to speak to [User's Full Name])
-    - Custom instructions (user-provided)
+    - Contact user and wait for a reply. (Email)
+    - Contact nominee from LegacyLink (Email)
+    - Contact nominee anonymously (e.g., calling from [XYZ company], asking to speak to [User's Full Name]) - This is still under review and may not be possible.
+    - Custom instructions (user-provided) - This is subject to LegacyLink capabilites and may not be possible.
 
 ### Action in Case of Demise Verification Failure
 - **Description:** The action to take if LegacyLink cannot definitively verify the user's status.
