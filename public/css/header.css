@@ -19,3 +19,13 @@ header {
 .branding img {
     height: 100px;
 }
+
+.development-banner {
+    background-color: #f00;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
