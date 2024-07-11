@@ -133,7 +133,7 @@
             <thead>
                 <tr class="text-center bg-dark">
                     <th>Name</th>
-                    <th>Messages</th>
+                    <th style="padding-right: 20%;">Messages</th>
                 </tr>
             </thead>
             <tbody>
@@ -151,9 +151,10 @@
                             <td>
                                 <table class="table table-borderless mb-0 table-sm table-hover">
                                     <tr>
-                                        <td colspan="2" class="text-center text-muted" style="cursor: pointer;" onclick="add_msg(this, '<%= nameAndMsg.id %>')">
+                                        <td colspan="1" class="text-center text-muted" style="cursor: pointer;" onclick="add_msg(this, '<%= nameAndMsg.id %>')">
                                             <i class="fa fa-plus"></i>
                                         </td>
+                                        <td class="unhoverable"></td>
                                     </tr>
                                     <% if (nameAndMsg.messages && Array.isArray(nameAndMsg.messages)) { %>
                                         <% nameAndMsg.messages.forEach((msg) => { %>

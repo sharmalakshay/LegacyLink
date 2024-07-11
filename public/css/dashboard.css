@@ -372,3 +372,7 @@ a {
 .name_row td {
     border-right: 1px solid #efeeee !important;
 }
+
+.unhoverable {
+    display: none;
+}
