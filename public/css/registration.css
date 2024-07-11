@@ -157,7 +157,41 @@ label a:hover {
     text-decoration: underline;
 }
 
-footer{
+header {
+    margin-bottom: 20px !important;
+}
+
+header * {
+    display: none !important;
+}
+
+/* footer{
     position: relative !important;
-    margin-top: 20px;
+    margin-top: 50px;
+} */
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    /* center columns */
+    justify-content: center;
+}
+
+.column {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+#intro_column {
+    flex: 0 0 auto;
+    width: 60%;
+    max-width: 60%;
+}
+  
+#form_column {
+    flex: 0 0 auto;
+    width: 30%;
+    max-width: 30%;
 }

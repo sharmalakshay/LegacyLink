@@ -11,55 +11,60 @@
 <body>
     <%- include('header') %>
 
-    <div class="welcome-section">
-        <h1>Welcome to LegacyLink</h1>
-        <p>LegacyLink is a secure platform designed to help you store and deliver final messages to the world. This service ensures that your messages are kept safe and confidential until they need to be delivered.</p>
-    
-        <ul>
-            <li><strong>Encrypted Storage:</strong> Names and messages are encrypted using advanced encryption techniques before being stored in our database, ensuring their confidentiality.</li>
-            <li><strong>Message Management:</strong> You can create, edit, and delete messages at any time, ensuring that your messages are always up-to-date.</li>
-            <li><strong>Demise Verification:</strong> The DVS <a target="_blank" href="https://github.com/sharmalakshay/LegacyLink/wiki/LegacyLink-Demise-Verification-System-(DVS)">(Demise Verification System)</a> is a secure process to ensure that your messages are shown only after you pass away.</li>
-            <li><strong>Privacy:</strong> Messages are displayed as per the privacy settings, ensuring that they reach only the intended recipients.</li>
-            <li style="text-align: center;"><strong>Total Users Count:</strong> <span id="total-users"></span></li>
-            <li>
-                <strong>Feedback:</strong>This is an ambitious project aiming to make a significant impact. Contributions, feedback, and discussions are highly welcome! Join us in shaping its future.
-                <a href="https://github.com/sharmalakshay/LegacyLink" target="_blank">Follow the project here on GitHub.</a>
-            </li>
-        </ul>
-    
+    <div class="row">
+        <div class="column" id="intro_column">
+            <div class="welcome-section">
+                <h1>Welcome to LegacyLink</h1>
+                <p>LegacyLink is a secure platform designed to help you store and deliver final messages to the world. This service ensures that your messages are kept safe and confidential until they need to be delivered.</p>
+            
+                <ul>
+                    <li><strong>Encrypted Storage:</strong> Names and messages are encrypted using advanced encryption techniques before being stored in our database, ensuring their confidentiality.</li>
+                    <li><strong>Message Management:</strong> You can create, edit, and delete messages at any time, ensuring that your messages are always up-to-date.</li>
+                    <li><strong>Demise Verification:</strong> The DVS <a target="_blank" href="https://github.com/sharmalakshay/LegacyLink/wiki/LegacyLink-Demise-Verification-System-(DVS)">(Demise Verification System)</a> is a secure process to ensure that your messages are shown only after you pass away.</li>
+                    <li><strong>Privacy:</strong> Messages are displayed as per the privacy settings, ensuring that they reach only the intended recipients.</li>
+                    <li style="text-align: center;"><strong>Total Users Count:</strong> <span id="total-users"></span></li>
+                    <li>
+                        <strong>Feedback:</strong>This is an ambitious project aiming to make a significant impact. Contributions, feedback, and discussions are highly welcome! Join us in shaping its future.
+                        <a href="https://github.com/sharmalakshay/LegacyLink" target="_blank">Follow the project here on GitHub.</a>
+                    </li>
+                </ul>
+            
+            </div>
+        </div>
+        <div class="column" id="form_column">
+            <br>
+            <div class="extra-links">
+                <a href="login">Already have an account? Login</a>
+            </div>
+        
+            <br>
+        
+            <form id="registration-form">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+        
+                <!-- Consent Checkboxes -->
+                <div>
+                    <input type="checkbox" id="privacy-consent" required>
+                    <label for="privacy-consent">I have read and accept the <a href="/privacy" target="_blank">Privacy Policy</a>.</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="terms-consent" required>
+                    <label for="terms-consent">I have read and agree to the <a href="/terms" target="_blank">Terms of Service</a>.</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="demise-consent" required>
+                    <label for="demise-consent">I consent to allow the platform to verify my demise in the event of my passing.</label>
+                </div>
+        
+                <br>
+        
+                <button id="register-button" type="submit">Register</button>
+            </form>
+        </div>
     </div>
-
-    <br>
-
-    <div class="extra-links">
-        <a href="login">Already have an account? Login</a>
-    </div>
-
-    <br>
-
-    <form id="registration-form">
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required>
-
-        <!-- Consent Checkboxes -->
-        <div>
-            <input type="checkbox" id="privacy-consent" required>
-            <label for="privacy-consent">I have read and accept the <a href="/privacy" target="_blank">Privacy Policy</a>.</label>
-        </div>
-        <div>
-            <input type="checkbox" id="terms-consent" required>
-            <label for="terms-consent">I have read and agree to the <a href="/terms" target="_blank">Terms of Service</a>.</label>
-        </div>
-        <div>
-            <input type="checkbox" id="demise-consent" required>
-            <label for="demise-consent">I consent to allow the platform to verify my demise in the event of my passing.</label>
-        </div>
-
-        <br>
-
-        <button id="register-button" type="submit">Register</button>
-    </form>
+    
 
     <script>
         document.getElementById('registration-form').addEventListener('submit', async (event) => {
