@@ -156,3 +156,8 @@ label a:hover {
 .welcome-section a:hover {
     text-decoration: underline;
 }
+
+footer{
+    position: relative !important;
+    margin-top: 20px;
+}
