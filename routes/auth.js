@@ -13,17 +13,17 @@ router.post('/register', async (req, res) => {
         // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
+            return res.status(400).json({ message: 'User already exists.' });
         }
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
         // Create new user
         const newUser = new User({ username, email, password: hashedPassword });
         await newUser.save();
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(201).json({ message: 'User created successfully.' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: 'Server Error.' });
     }
 });
 
@@ -35,25 +35,25 @@ router.post('/login', async (req, res) => {
         if (!user) {
             // handle user not found
             // console.error('User not found');
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User not found.' });
         } else {
             // Check password
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 // handle invalid credentials
-                // console.error('Invalid credentials');
-                return res.status(401).json({ message: 'Invalid credentials' });
+                // console.error('Invalid credentials.');
+                return res.status(401).json({ message: 'Invalid credentials.' });
             } else {
                 // handle login success
                 // console.log('Login successful');
                 const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
                 res.cookie('token', token, { httpOnly: true }); // set cookie
-                return res.status(200).json({ message: 'Login successful', token });
+                return res.status(200).json({ message: 'Login successful.', token });
             }
         }
     } catch (error) {
         console.error(error.message);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: 'Server Error.' });
     }
 });
 
@@ -83,7 +83,7 @@ router.post('/forgot_password', async (req, res) => {
         }
     } catch (error) {
         console.error(error.message);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: 'Server Error.' });
     }
 });
 
@@ -99,7 +99,7 @@ router.post('/verify_user', async (req, res) => {
         return res.redirect('/reset_password?email=' + email);
     } catch (error) {
         // console.error(error.message);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: 'Server Error.' });
     }
 });
 
@@ -124,7 +124,7 @@ router.post('/reset_password', async (req, res) => {
         return res.render('redirect_message', { message: 'Password reset successfully. Logging in!' });
     } catch (error) {
         console.error(error.message);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: 'Server Error.' });
     }
 });
 
@@ -133,11 +133,11 @@ router.post('/retrieve_msgs', async (req, res) => {
         const { username, password } = req.body;
         const user = await User.findOne({ username }).select('+password');
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User not found.' });
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ message: 'Invalid credentials.' });
         }
 
         const decryptedNamesAndMsgs = user.names
@@ -154,7 +154,7 @@ router.post('/retrieve_msgs', async (req, res) => {
         return res.status(200).json({ nameAndMsgs: decryptedNamesAndMsgs });
     } catch (error) {
         // console.error(error.message);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: 'Server Error.' });
     }
 });
 
@@ -169,10 +169,10 @@ router.post('/add_name', async (req, res) => {
             name_iv: encryptedName.iv
         });
         await user.save();
-        res.status(200).json({ message: 'Name added successfully', new_name_id: user.names[user.names.length - 1]._id });
+        res.status(200).json({ message: 'Name added successfully.', new_name_id: user.names[user.names.length - 1]._id });
     } catch (error) {
         console.error(error.message);
-        res.status(500).send('Server Error');
+        res.status(500).send('Server Error.');
     }
 });
 
@@ -187,10 +187,10 @@ router.post('/add_message', async (req, res) => {
         const encryptedMessage = encrypt('');
         name.messages.push({ message: encryptedMessage.encryptedData, message_iv: encryptedMessage.iv });
         await user.save();
-        res.status(200).json({ message: 'Message added successfully', new_msg_id: name.messages[name.messages.length - 1]._id });
+        res.status(200).json({ message: 'Message added successfully.', new_msg_id: name.messages[name.messages.length - 1]._id });
     } catch (error) {
         console.error(error.message);
-        res.status(500).send('Server Error');
+        res.status(500).send('Server Error.');
     }
 });
 
@@ -211,7 +211,7 @@ router.post('/edit_message', async (req, res) => {
         res.status(200).end();
     } catch (error) {
         console.error(error.message);
-        res.status(500).send('Server Error');
+        res.status(500).send('Server Error.');
     }
 });
 
@@ -228,7 +228,7 @@ router.post('/delete_name', async (req, res) => {
         res.status(200).end();
     } catch (error) {
         console.error(error.message);
-        res.status(500).send('Server Error');
+        res.status(500).send('Server Error.');
     }
 });
 
@@ -246,7 +246,7 @@ router.post('/delete_message', async (req, res) => {
         res.status(200).end();
     } catch (error) {
         console.error(error.message);
-        res.status(500).send('Server Error');
+        res.status(500).send('Server Error.');
     }
 });
 
@@ -272,7 +272,7 @@ router.post('/edit_name', async (req, res) => {
         res.status(200).end();
     } catch (error) {
         console.error(error.message);
-        res.status(500).send('Server Error');
+        res.status(500).send('Server Error.');
     }
 });
 
@@ -283,15 +283,15 @@ router.post('/change_password', async (req, res) => {
         const user = await User.findOne({ username }).select('+password');
         const isMatch = await bcrypt.compare(currentPassword, user.password);
         if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ message: 'Invalid credentials.' });
         }
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         user.password = hashedPassword;
         await user.save();
-        res.status(200).json({ message: 'Password changed successfully' });
+        res.status(200).json({ message: 'Password changed successfully.' });
     } catch (error) {
         console.error(error.message);
-        res.status(500).send('Server Error');
+        res.status(500).send('Server Error.');
     }
 });
 
@@ -302,7 +302,7 @@ router.get('/get_user_count', async (req, res) => {
         res.status(200).json({ count });
     } catch (error) {
         console.error(error.message);
-        res.status(500).send('Server Error');
+        res.status(500).send('Server Error.');
     }
 });
 

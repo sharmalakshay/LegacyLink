@@ -81,14 +81,15 @@
                     body: JSON.stringify({ username, email, password })
                 });
                 if (!response.ok) {
-                    throw new Error('Registration failed');
+                    let responseJson = await response.json();
+                    throw new Error('Registration failed. ' + responseJson.message);
                 }
                 alert('Registration successful');
                 // Redirect to login page or dashboard
                 window.location.href = '/login'; // Redirect to login page
             } catch (error) {
                 console.error('Registration error:', error);
-                alert('Registration failed');
+                alert(error);
             }
         });
 
