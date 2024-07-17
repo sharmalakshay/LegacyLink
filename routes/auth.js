@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
         await newUser.save();
         // Send email to user
         const subject = 'Verify Your Email';
-        const verification_link = `${process.env.BASE_URL}/verify_email?email=${email}&verification_code=${verification_code_hash}`;
+        const verification_link = `${process.env.SITE_ADDRESS}/verify_email?email=${email}&verification_code=${verification_code_hash}`;
         const html = `<p>Click <a href="${verification_link}">here</a> to verify your email.</p>`;
         sendEmail(email, subject, html).then(() => {
             return res.status(201).json({ message: 'User created successfully. Please verify your email.' });
