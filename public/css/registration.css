@@ -194,6 +194,7 @@ header * {
     flex: 0 0 auto;
     width: 30%;
     max-width: 30%;
+    margin-bottom: 15%;
 }
 
 @media (max-width: 768px) {
