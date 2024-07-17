@@ -36,7 +36,8 @@
                     body: JSON.stringify({ email, password })
                 });
                 if (!response.ok) {
-                    throw new Error('Login failed');
+                    let responseJSON = await response.json();
+                    throw new Error('Login failed. ' + responseJSON.message);
                 }
                 const data = await response.json();
                 // Save the token in local storage
@@ -46,7 +47,7 @@
                 window.location.href = '/dashboard';
             } catch (error) {
                 console.error('Login error:', error);
-                alert('Login failed');
+                alert(error);
             }
         });
 

@@ -17,10 +17,18 @@ router.post('/register', async (req, res) => {
         }
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
+        // Create new random verification string
+        const verification_code_hash = bcrypt.hashSync(Math.floor(100000 + Math.random() * 900000).toString(), 10);
         // Create new user
-        const newUser = new User({ username, email, password: hashedPassword });
+        const newUser = new User({ username, email, password: hashedPassword, verification_code: verification_code_hash });
         await newUser.save();
-        res.status(201).json({ message: 'User created successfully.' });
+        // Send email to user
+        const subject = 'Verify Your Email';
+        const verification_link = `${process.env.BASE_URL}/verify_email?email=${email}&verification_code=${verification_code_hash}`;
+        const html = `<p>Click <a href="${verification_link}">here</a> to verify your email.</p>`;
+        sendEmail(email, subject, html).then(() => {
+            return res.status(201).json({ message: 'User created successfully. Please verify your email.' });
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server Error.' });
@@ -44,6 +52,11 @@ router.post('/login', async (req, res) => {
                 // console.error('Invalid credentials.');
                 return res.status(401).json({ message: 'Invalid credentials.' });
             } else {
+                if(!user.active) {
+                    // handle user not verified
+                    // console.error('User not verified.');
+                    return res.status(401).json({ message: 'User not verified.' });
+                }
                 // handle login success
                 // console.log('Login successful');
                 const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
