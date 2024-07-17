@@ -195,3 +195,15 @@ header * {
     width: 30%;
     max-width: 30%;
 }
+
+@media (max-width: 768px) {
+    #intro_column {
+        width: 90%;
+        max-width: 100%;
+    }
+  
+    #form_column {
+        width: 100%;
+        max-width: 100%;
+    }
+}
