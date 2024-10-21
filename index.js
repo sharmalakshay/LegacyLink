@@ -138,6 +138,35 @@ app.get('/registration', (req, res) => {
     res.render('registration');
 });
 
+app.get('/verify_email', (req, res) => {
+    try {
+        const { email, verification_code } = req.query;
+        User.findOne({ email })
+            .then(user => {
+                if (user.verification_code === verification_code) {
+                    user.verified = true;
+                    user.save()
+                        .then(() => {
+                            res.render('redirect_message', { message: 'Email verified successfully. Please login.' });
+                        })
+                        .catch(err => {
+                            // console.error(err);
+                            res.status(500).send(err);
+                        });
+                } else {
+                    res.status(401).send('Invalid verification code');
+                }
+            })
+            .catch(err => {
+                // console.error(err);
+                res.status(500).send(err);
+            });
+    } catch (err) {
+        // console.error(err);
+        res.status(500).send(err);
+    }   
+});
+
 app.get('/logout', (req, res) => {
     res.clearCookie('token');
     res.redirect('/login');
