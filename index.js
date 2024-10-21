@@ -144,7 +144,7 @@ app.get('/verify_email', (req, res) => {
         User.findOne({ email })
             .then(user => {
                 if (user.verification_code === verification_code) {
-                    user.verified = true;
+                    user.active = true;
                     user.save()
                         .then(() => {
                             res.render('redirect_message', { message: 'Email verified successfully. Please login.' });
