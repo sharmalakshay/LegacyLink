@@ -14,11 +14,16 @@ button {
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
-    /* display: flex;
-    flex-direction: column; */
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    /* This ensures that the main content expands to fill the viewport, pushing the footer down */
 }
 
 /* Form container */
@@ -194,6 +199,7 @@ header * {
     flex: 0 0 auto;
     width: 30%;
     max-width: 30%;
+<<<<<<< Updated upstream
     margin-bottom: 15%;
 }
 
@@ -203,6 +209,15 @@ header * {
         max-width: 100%;
     }
   
+=======
+}
+
+@media screen and (max-width: 768px) {
+    #intro_column {
+        width: 100%;
+        max-width: 100%;
+    }
+>>>>>>> Stashed changes
     #form_column {
         width: 100%;
         max-width: 100%;
