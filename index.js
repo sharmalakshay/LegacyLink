@@ -147,7 +147,7 @@ app.get('/verify_email', (req, res) => {
                     user.active = true;
                     user.save()
                         .then(() => {
-                            res.render('redirect_message', { message: 'Email verified successfully. Please login.' });
+                            res.render('redirect_message', { message: 'Email verified successfully. Please login.', redirect: 'login' });
                         })
                         .catch(err => {
                             // console.error(err);
